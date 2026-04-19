@@ -1,0 +1,43 @@
+# ==========================================================
+# Social Network Template
+# ==========================================================
+# This is a base template used by the plugin to ensure all 
+# social network files have the latest settings.
+# ==========================================================
+
+template:
+  # Global toggle for this social network.
+  enabled: true
+
+  # Toggle to control if a dynamic command is registered.
+  register-command: true
+
+  # The primary command (e.g., custom).
+  command: custom
+  
+  # Aliases for the command.
+  aliases:
+    - example
+  
+  # Permission node.
+  permission: ""
+  
+  # External link.
+  link: https://example.com
+  
+  # GUI appearance.
+  gui-item:
+    type: BLOCK
+    material: PAPER
+  
+  # Chat hover text.
+  hover: "&eClick here!"
+  
+  # Messages sent on use.
+  message:
+    - "&eYou are visiting our &bCustom &enetwork!"
+    - "&eLink: &f{link}"
+
+  # First-visit rewards.
+  rewards:
+    commands: []

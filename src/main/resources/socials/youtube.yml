@@ -1,0 +1,73 @@
+# ==========================================================
+# Social Network: YouTube
+# ==========================================================
+# Configuration for the '/youtube' command and its behavior.
+# This file controls how players interact with your YouTube channel links.
+# 
+# Support: https://discord.gg/Yb6GsfGWmd
+# ==========================================================
+
+youtube:
+  # Global toggle for this specific social network.
+  enabled: true
+
+  # Toggle to control if a dynamic command (e.g., /youtube) is registered.
+  register-command: true
+
+  # The primary command registered for this social network (without the slash).
+  command: youtube
+  
+  # ----------------------------------------------------------
+  # Aliases & Permissions
+  # ----------------------------------------------------------
+  # Alternative commands to trigger this social network.
+  aliases:
+    - yt
+    - videos
+  
+  # Permission node required. Leave empty for public access.
+  permission: ""
+  
+  # ----------------------------------------------------------
+  # Main Connection
+  # ----------------------------------------------------------
+  # The external URL for your YouTube channel.
+  link: https://youtube.com/c/your-channel
+
+  # ----------------------------------------------------------
+  # GUI Icon Appearance
+  # ----------------------------------------------------------
+  # Defines how this social network looks in the management/editor GUI (/xs).
+  gui-item:
+    # Use BLOCK or HEAD.
+    type: BLOCK
+    # Material name or Player Name/Base64.
+    material: RED_DYE
+  
+  # ----------------------------------------------------------
+  # Interactive Chat Features
+  # ----------------------------------------------------------
+  # Hover text for the link in chat.
+  hover: "&c&lSUBSCRIBE! &7Watch our server trailers."
+  
+  # Detailed message sequence. Supports {link} and {player}.
+  message:
+    - "&8&m                                                  "
+    - ""
+    - "&c&l    YOUTUBE CHANNEL"
+    - ""
+    - "&7Subscribe to catch up with our latest trailers,"
+    - "&7tutorial videos, and season updates!"
+    - ""
+    - "&eLink: &f{link}"
+    - ""
+    - "&8&m                                                  "
+
+  # ----------------------------------------------------------
+  # Automated Rewards
+  # ----------------------------------------------------------
+  # Rewards granted on the first click.
+  rewards:
+    commands:
+      - "eco give {player} 100"
+      - "msg {player} &aThanks for visiting our YouTube channel!"

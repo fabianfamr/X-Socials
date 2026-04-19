@@ -1,0 +1,57 @@
+# Idioma: Português (PT)
+
+# Mensagens gerais
+no-permission: "&cVocê não tem permissão para usar este comando."
+player-only: "&cEste comando só pode ser usado por jogadores."
+config-reloaded: "&aConfiguração recarregada com sucesso."
+checking-updates: "&eVerificando atualizações..."
+update-available: "&aNova versão disponível! &7Atual: {0} &8→ &aNova: {1}"
+update-current: "&aVocê está usando a versão mais recente."
+update-download: "&eDownload: &b{0}"
+update-error: "&cErro ao verificar atualizações."
+
+# Comandos
+command-usage: "&eUso: &7/xsocials [reload|update|list|edit|<social>]"
+social-not-found: "&cRede social '&e{social}&c' não encontrada."
+social-executed: "&aComando de &e{social}&a executado."
+
+# Redes sociais
+social-click-message: "&eClique para visitar &b{social}"
+social-click-hover: "&7Clique para abrir &b{link}"
+social-link-copied: "&aLink copiado para a área de transferência!"
+
+# Recompensas
+reward-received: "&aVocê recebeu uma recompensa por visitar nosso &b{social}&a!"
+
+# Ajuda e Lista
+help-header: "&8&m                    &r &bX-Socials &8&m                    "
+help-title: "&7Comandos disponíveis:"
+help-list: "&e/xsocials list &7- Lista todas as redes sociais"
+help-gui: "&e/xsocials -gui &7- Abre o menu principal"
+help-reload: "&e/xsocials reload &7- Recarrega a configuração"
+help-update: "&e/xsocials update &7- Verifica atualizações"
+help-footer: "&8&m                                                  "
+list-header: "&8&m                    &r &bRedes Sociais &8&m                    "
+list-format: "&e/{0} &7- {1}"
+list-footer: "&8&m                                                  "
+
+# Editor GUI
+gui-main-title: "&bRedes Sociais"
+gui-editor-title: "&8Editando: &b{0}"
+gui-confirm-delete-title: "&4Confirmar Exclusão?"
+gui-item-edit-info-lore: "&7Editando propriedades..."
+gui-item-edit-command-name: "&eEditar Comando"
+gui-item-edit-command-lore: "&7Atual: &f/{0}"
+gui-item-edit-name-name: "&eEditar Nome"
+gui-item-edit-name-lore: "&7Atual: &f{0}"
+gui-item-edit-link-name: "&eEditar Link"
+gui-item-edit-link-lore: "&7Atual: &f{0}"
+gui-item-edit-permission-name: "&eEditar Permissão"
+gui-item-edit-permission-lore: "&7Atual: &f{0}"
+gui-item-save-name: "&aSalvar Alterações"
+gui-item-save-lore: "&7Clique para salvar tudo"
+gui-item-back-name: "&7Voltar"
+gui-item-delete-name: "&cExcluir Rede Social"
+gui-item-delete-lore: "&7Clique para excluir esta rede"
+gui-item-confirm-name: "&aConfirmar"
+gui-item-cancel-name: "&cCancelar"

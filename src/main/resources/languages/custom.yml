@@ -1,0 +1,63 @@
+# Language: Custom (CUSTOM)
+# Edit this file to create your own custom language
+
+# General messages
+no-permission: "&cYou don't have permission to use this command."
+player-only: "&cThis command can only be used by players."
+config-reloaded: "&aConfiguration reloaded successfully."
+checking-updates: "&eChecking for updates..."
+update-available: "&aNew version available! &7Current: {0} &8→ &aNew: {1}"
+update-current: "&aYou are using the latest version."
+update-download: "&eDownload: &b{0}"
+update-error: "&cError checking for updates."
+
+# General settings for this network
+  # Set to false to disable this social network entirely.
+  enabled: true
+  
+  # Set to false if you don't want to register a /command for this social.
+  register-command: true
+
+  # The primary command to be registered (without the slash).
+  command: custom
+
+# Social networks
+social-click-message: "&eClick to visit &b{social}"
+social-click-hover: "&7Click to open &b{link}"
+social-link-copied: "&aLink copied to clipboard!"
+
+# Rewards
+reward-received: "&aYou received a reward for checking our &b{social}&a!"
+
+# Help and List
+help-header: "&8&m                    &r &bX-Socials &8&m                    "
+help-title: "&7Available commands:"
+help-list: "&e/xsocials list &7- List all social networks"
+help-gui: "&e/xsocials -gui &7- Open main social menu"
+help-reload: "&e/xsocials reload &7- Reload configuration"
+help-update: "&e/xsocials update &7- Check for updates"
+help-footer: "&8&m                                                  "
+list-header: "&8&m                    &r &bSocial Networks &8&m                    "
+list-format: "&e/{0} &7- {1}"
+list-footer: "&8&m                                                  "
+
+# GUI Editor
+gui-main-title: "&bSocial Networks"
+gui-editor-title: "&8Editing: &b{0}"
+gui-confirm-delete-title: "&4Confirm Deletion?"
+gui-item-edit-info-lore: "&7Editing properties..."
+gui-item-edit-command-name: "&eEdit Command"
+gui-item-edit-command-lore: "&7Current: &f/{0}"
+gui-item-edit-name-name: "&eEdit Name"
+gui-item-edit-name-lore: "&7Current: &f{0}"
+gui-item-edit-link-name: "&eEdit Link"
+gui-item-edit-link-lore: "&7Current: &f{0}"
+gui-item-edit-permission-name: "&eEdit Permission"
+gui-item-edit-permission-lore: "&7Current: &f{0}"
+gui-item-save-name: "&aSave Changes"
+gui-item-save-lore: "&7Click to save all changes"
+gui-item-back-name: "&7Go Back"
+gui-item-delete-name: "&cDelete Social"
+gui-item-delete-lore: "&7Click to remove this network"
+gui-item-confirm-name: "&aConfirm"
+gui-item-cancel-name: "&cCancel"

@@ -1,0 +1,52 @@
+# ==========================================================
+# X-Socials Broadcasts Configuration
+# ==========================================================
+# This file allows you to define multiple automated message groups.
+# Broadcasts do NOT use the global plugin prefix for a cleaner, 
+# professional announcement aesthetic.
+#
+# HOW TO ADD NEW BROADCASTS:
+# 1. Add a new number key (e.g., 4:).
+# 2. Add 'message:' nested under it.
+# 3. List your lines starting with a dash (-).
+#
+# PLACEHOLDERS:
+# - Standard Color Codes: &0-&f, &l, &n, etc.
+# - PlaceholderAPI: %player_name%, %server_online%, etc.
+# - Newline support: Just add another list item.
+#
+# Support: https://discord.gg/Yb6GsfGWmd
+# ==========================================================
+
+1:
+  # This section announces your Discord server.
+  # Pro tip: Invite links (https://...) are clickable by players!
+  message:
+    - "&8&m                                                  "
+    - ""
+    - "&b&l    SOCIAL ANNOUNCEMENT"
+    - ""
+    - "&7Join our &bDiscord &7to stay updated with news!"
+    - "&eType &f/discord &eto get the link."
+    - ""
+    - "&8&m                                                  "
+
+2:
+  # This section promotes your YouTube channel.
+  # You can add as many lines as you want to create beautiful boxes.
+  message:
+    - "&8&m                                                  "
+    - ""
+    - "&c&l    YOUTUBE CHANNEL"
+    - ""
+    - "&7Watch our best trailers and tutorials on &cYouTube"
+    - "&eType &f/youtube &eto visit us."
+    - ""
+    - "&8&m                                                  "
+
+3:
+  # Simple one-line or two-line tips for the players.
+  # Use [hover="Tooltip text"]Message[/hover] for interactive hovers.
+  message:
+    - "&eTip: [hover=\"&a¡Click to see list!\"]&fYou can earn rewards by visiting our social networks![/hover]"
+    - "&eUse &f/xs list &eto see all available networks."

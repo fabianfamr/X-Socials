@@ -1,0 +1,39 @@
+name: X-Socials
+version: 1.2
+api-version: 1.13
+main: com.fabian.xsocials.XSocials
+author: Fabian
+description: Simple social networks plugin for Minecraft
+folia-supported: true
+
+commands:
+  xsocials:
+    description: Main command for X-Socials
+    aliases: [xs]
+    usage: /<command> [reload|update|list|edit|<social>]
+    permission: xsocials.use
+
+permissions:
+  xsocials.*:
+    description: Full access to all X-Socials features
+    children:
+      xsocials.admin: true
+  xsocials.admin:
+    description: Allows using the editor and managing socials
+    default: op
+    children:
+      xsocials.reload: true
+      xsocials.update: true
+      xsocials.gui: true
+  xsocials.use:
+    description: Allows using the basic social commands
+    default: true
+  xsocials.gui:
+    description: Allows managing and editing social networks via GUI
+    default: op
+  xsocials.reload:
+    description: Allows reloading the plugin configuration
+    default: op
+  xsocials.update:
+    description: Allows checking for plugin updates
+    default: op

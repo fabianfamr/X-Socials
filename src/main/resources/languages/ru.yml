@@ -1,0 +1,57 @@
+# Язык: Русский (RU)
+
+# Общие сообщения
+no-permission: "&cУ вас нет разрешения на использование этой команды."
+player-only: "&cЭта команда может использоваться только игроками."
+config-reloaded: "&aКонфигурация успешно перезагружена."
+checking-updates: "&eПроверка обновлений..."
+update-available: "&aДоступна новая версия! &7Текущая: {0} &8→ &aНовая: {1}"
+update-current: "&aВы используете последнюю версию."
+update-download: "&eСкачать: &b{0}"
+update-error: "&cОшибка при проверке обновлений."
+
+# Команды
+command-usage: "&eИспользование: &7/xsocials [reload|update|list|edit|<social>]"
+social-not-found: "&cСоциальная сеть '&e{social}&c' не найдена."
+social-executed: "&aКоманда &e{social}&a выполнена."
+
+# Социальные сети
+social-click-message: "&eНажмите, чтобы посетить &b{social}"
+social-click-hover: "&7Нажмите, чтобы открыть &b{link}"
+social-link-copied: "&aСсылка скопирована в буфер обмена!"
+
+# Награды (Rewards)
+reward-received: "&aВы получили награду за просмотр нашего &b{social}&a!"
+
+# Помощь и Список
+help-header: "&8&m                    &r &bX-Socials &8&m                    "
+help-title: "&7Доступные команды:"
+help-list: "&e/xsocials list &7- Список всех социальных сетей"
+help-gui: "&e/xsocials -gui &7- Открыть главное меню"
+help-reload: "&e/xsocials reload &7- Перезагрузить конфигурацию"
+help-update: "&e/xsocials update &7- Проверить обновления"
+help-footer: "&8&m                                                  "
+list-header: "&8&m                    &r &bСоциальные сети &8&m                    "
+list-format: "&e/{0} &7- {1}"
+list-footer: "&8&m                                                  "
+
+# Редактор GUI
+gui-main-title: "&bСоциальные сети"
+gui-editor-title: "&8Редактирование: &b{0}"
+gui-confirm-delete-title: "&4Подтвердите удаление?"
+gui-item-edit-info-lore: "&7Редактирование свойств..."
+gui-item-edit-command-name: "&eИзменить команду"
+gui-item-edit-command-lore: "&7Текущая: &f/{0}"
+gui-item-edit-name-name: "&eИзменить имя"
+gui-item-edit-name-lore: "&7Текущее: &f{0}"
+gui-item-edit-link-name: "&eИзменить ссылку"
+gui-item-edit-link-lore: "&7Текущая: &f{0}"
+gui-item-edit-permission-name: "&eИзменить разрешение"
+gui-item-edit-permission-lore: "&7Текущее: &f{0}"
+gui-item-save-name: "&aСохранить изменения"
+gui-item-save-lore: "&7Нажмите, чтобы сохранить всё"
+gui-item-back-name: "&7Назад"
+gui-item-delete-name: "&cУдалить соцсеть"
+gui-item-delete-lore: "&7Нажмите, чтобы удалить эту сеть"
+gui-item-confirm-name: "&aПодтвердить"
+gui-item-cancel-name: "&cОтмена"

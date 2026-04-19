@@ -1,0 +1,86 @@
+# ==========================================================
+# Social Network: Discord
+# ==========================================================
+# Configuration for the '/discord' command and its behavior.
+# This file controls how players interact with your Discord server links.
+# 
+# Support: https://discord.gg/Yb6GsfGWmd
+# ==========================================================
+
+discord:
+  # Global toggle for this specific social network.
+  # If set to false, the command will be disabled and hidden from the GUI.
+  enabled: true
+
+  # Toggle to control if a dynamic command (e.g., /discord) is registered.
+  # - true: Registers /discord and its aliases.
+  # - false: Only accessible via /xsocials discord or the GUI.
+  register-command: true
+
+  # The primary command registered for this social network (without the slash).
+  # Players will use /discord to see the messages below.
+  command: discord
+  
+  # ----------------------------------------------------------
+  # Aliases & Permissions
+  # ----------------------------------------------------------
+  # Optional aliases that players can use to trigger this command.
+  aliases:
+    - dsc
+    - community
+  
+  # Required permission node to execute this specific command.
+  # Leave empty ("") to allow everyone (recommended for social links).
+  # If set, players without the permission will see the 'no-permission' message.
+  permission: ""
+  
+  # ----------------------------------------------------------
+  # Main Connection
+  # ----------------------------------------------------------
+  # The external URL that the player will visit.
+  # Pro Tip: Use a permanent invite link for Discord!
+  link: https://discord.gg/Yb6GsfGWmd
+
+  # ----------------------------------------------------------
+  # GUI Icon Appearance
+  # ----------------------------------------------------------
+  # Defines how this social network looks in the management/editor GUI (/xs).
+  gui-item:
+    # Options: 
+    # - BLOCK: Use a standard Minecraft item/block.
+    # - HEAD: Use a player skin (value can be a name or Base64).
+    type: BLOCK
+    # If BLOCK: Specify a Material name (e.g., PURPLE_DYE, DIAMOND, PAPER).
+    # If HEAD: Specify a player name (e.g., MHF_Discord) or Base64 string.
+    material: PURPLE_DYE
+  
+  # ----------------------------------------------------------
+  # Interactive Chat Features
+  # ----------------------------------------------------------
+  # This text appears when a player hovers their cursor over the link in chat.
+  # Supports color codes (&).
+  hover: "&b&lCLICK HERE! &7to join our Discord server."
+  
+  # The sequence of messages sent to the player when they use the command.
+  # Supports: {link}, {player} and all PlaceholderAPI placeholders.
+  message:
+    - "&8&m                                                  "
+    - ""
+    - "&b&l    DISCORD SERVER"
+    - ""
+    - "&7Join our amazing community for exclusive giveaways,"
+    - "&7event announcements, and player support!"
+    - ""
+    - "&eLink: &f{link}"
+    - ""
+    - "&8&m                                                  "
+
+  # ----------------------------------------------------------
+  # Automated Rewards
+  # ----------------------------------------------------------
+  # Commands executed by the CONSOLE the FIRST time a player clicks this link.
+  # Keep 'rewards.enable: true' in config.yml for these to work.
+  rewards:
+    commands:
+      - "eco give {player} 150"
+      - "msg {player} &aYou received $150 for visiting our Discord!"

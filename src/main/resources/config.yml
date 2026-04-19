@@ -1,0 +1,62 @@
+# ==========================================================
+# X-Socials Main Configuration
+# ==========================================================
+# This is the primary configuration file for X-Socials.
+# All messages sent by the plugin can be localized in the /languages/ folder.
+# 
+# Support: https://discord.gg/Yb6GsfGWmd
+# ==========================================================
+
+# ----------------------------------------------------------
+# Plugin Language Settings
+# ----------------------------------------------------------
+# Set the language for all plugin messages.
+# The plugin will look for a file named {language}.yml in the /languages/ folder.
+# 
+# Supported by default: EN, ES, PT, RU, JA.
+# You can create your own (e.g., 'french.yml') and set: language: french
+language: EN
+
+# ----------------------------------------------------------
+# Plugin Branding
+# ----------------------------------------------------------
+# This prefix will be shown before most chat messages.
+# You can use standard Minecraft color codes (&).
+prefix: "&8[&bX-Socials&8]&r"
+
+# ----------------------------------------------------------
+# Global Toggles
+# ----------------------------------------------------------
+# check-updates: Automatically checks for newer versions on SpigotMC on startup.
+# If an update is found, administrators will be notified in console and game.
+check-updates: true
+
+# ----------------------------------------------------------
+# Broadcast System
+# ----------------------------------------------------------
+# Periodically sends multi-line announcements to all players.
+# Configurations for the individual messages are located in 'broadcasts.yml'.
+broadcasts:
+  # Global enable/disable toggle for the broadcast system.
+  # Set to false to stop all automatic announcements.
+  enable: true
+  
+  # Interval in seconds between each broadcast.
+  # Default: 300 (5 minutes). Recommended: 120-600.
+  interval: 300
+  
+  # How to pick the next broadcast:
+  # - true: Picks a totally random group from broadcasts.yml each time.
+  # - false: Follows the numerical order (1 -> 2 -> 3 -> 1...).
+  random: false
+
+# ----------------------------------------------------------
+# Rewards System
+# ----------------------------------------------------------
+# Global toggle to enable or disable the first-visit rewards.
+# When enabled, players can claim rewards defined in the individual 
+# social network files (socials/*.yml).
+# 
+# Players can only claim each reward ONCE (linked to their UUID).
+rewards:
+  enable: true
