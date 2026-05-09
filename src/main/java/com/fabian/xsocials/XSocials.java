@@ -7,6 +7,8 @@ import com.fabian.xsocials.managers.BroadcastManager;
 import com.fabian.xsocials.managers.GUIManager;
 import com.fabian.xsocials.utils.ConfigUpdater;
 import com.fabian.xsocials.utils.UpdateChecker;
+import com.fabian.xsocials.utils.StatsManager;
+import com.fabian.xsocials.metrics.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class XSocials extends JavaPlugin {
@@ -16,6 +18,8 @@ public class XSocials extends JavaPlugin {
     private SocialManager socialManager;
     private GUIManager guiManager;
     private com.fabian.xsocials.managers.BroadcastManager broadcastManager;
+    private StatsManager statsManager;
+    private Metrics metrics;
 
     public static final String PREFIX = org.bukkit.ChatColor.DARK_GRAY + "[" + org.bukkit.ChatColor.AQUA + "X-Socials"
             + org.bukkit.ChatColor.DARK_GRAY + "] " + org.bukkit.ChatColor.RESET;
@@ -25,6 +29,9 @@ public class XSocials extends JavaPlugin {
         instance = this;
 
         try {
+            String version = getDescription().getVersion();
+            log(org.bukkit.ChatColor.DARK_AQUA + "Enabling X-Socials v" + version);
+
             // Save and update configuration
             saveDefaultConfig();
 
@@ -33,6 +40,16 @@ public class XSocials extends JavaPlugin {
             socialManager = new SocialManager(this);
             guiManager = new GUIManager(this);
             broadcastManager = new BroadcastManager(this);
+            statsManager = new StatsManager(this);
+
+            log(org.bukkit.ChatColor.GREEN + "Successfully enabled!");
+
+            // Initialize bStats
+            if (getConfig().getBoolean("bstats.enabled", true)) {
+                metrics = new Metrics(this, 24072);
+                metrics.addCustomChart(new Metrics.SingleLineChart("total_uses", () -> statsManager.getTotalUses()));
+                metrics.addCustomChart(new Metrics.SimpleBarChart("social_uses", statsManager::getAllSocialUses));
+            }
 
             // Register commands
             registerCommands();
@@ -48,7 +65,10 @@ public class XSocials extends JavaPlugin {
                 checkForUpdates();
             }
 
-            log(org.bukkit.ChatColor.GREEN + "X-Socials v" + getDescription().getVersion() + " enabled successfully!");
+            log("----------------------------------------------");
+            log(org.bukkit.ChatColor.GREEN + "  Enabled v" + version + "! Enjoy socials!");
+            log(org.bukkit.ChatColor.AQUA + "  Language: " + getConfig().getString("language", "EN").toUpperCase());
+            log("----------------------------------------------");
 
         } catch (Exception e) {
             getLogger().severe("FATAL ERROR DURING ENABLE: " + e.getMessage());
@@ -103,6 +123,9 @@ public class XSocials extends JavaPlugin {
 
         // Reload broadcasts
         broadcastManager.reload();
+
+        // Reload stats
+        statsManager.reload();
     }
 
     public static XSocials getInstance() {
@@ -123,5 +146,9 @@ public class XSocials extends JavaPlugin {
 
     public com.fabian.xsocials.managers.BroadcastManager getBroadcastManager() {
         return broadcastManager;
+    }
+
+    public StatsManager getStatsManager() {
+        return statsManager;
     }
 }

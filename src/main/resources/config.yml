@@ -13,9 +13,9 @@
 # Set the language for all plugin messages.
 # The plugin will look for a file named {language}.yml in the /languages/ folder.
 # 
-# Supported by default: EN, ES, PT, RU, JA.
+# Supported by default: en, es, pt, ru, ja.
 # You can create your own (e.g., 'french.yml') and set: language: french
-language: EN
+language: en
 
 # ----------------------------------------------------------
 # Plugin Branding
@@ -60,3 +60,28 @@ broadcasts:
 # Players can only claim each reward ONCE (linked to their UUID).
 rewards:
   enable: true
+
+# ----------------------------------------------------------
+# Cooldown System (Global)
+# ----------------------------------------------------------
+# Default cooldown for all social networks.
+# This can be overridden per-social in each social's YAML file.
+# Set 'seconds' to 0 to disable global cooldown.
+cooldown:
+  seconds: 0
+
+# ----------------------------------------------------------
+# bStats Metrics
+# ----------------------------------------------------------
+# Anonymous usage statistics to help improve the plugin.
+# Set to false to opt-out of bStats tracking.
+bstats:
+  enabled: true
+
+# ----------------------------------------------------------
+# GUI Editor Settings
+# ----------------------------------------------------------
+editor:
+  # Time in seconds before changes are auto-discarded when closing without saving.
+  # Set to 0 to disable the confirmation reopen.
+  confirm-close-delay: 5

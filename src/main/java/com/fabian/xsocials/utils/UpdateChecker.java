@@ -28,7 +28,7 @@ public class UpdateChecker {
     }
 
     public void checkForUpdates(CommandSender sender) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        com.fabian.xsocials.utils.SchedulerUtils.runAsync(plugin, () -> {
             try {
                 String currentVersion = plugin.getDescription().getVersion();
 

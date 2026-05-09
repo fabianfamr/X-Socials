@@ -11,15 +11,10 @@ update-current: "&aYou are using the latest version."
 update-download: "&eDownload: &b{0}"
 update-error: "&cError checking for updates."
 
-# General settings for this network
-  # Set to false to disable this social network entirely.
-  enabled: true
-  
-  # Set to false if you don't want to register a /command for this social.
-  register-command: true
-
-  # The primary command to be registered (without the slash).
-  command: custom
+# Commands
+command-usage: "&eUsage: &7/xsocials [reload|update|list|version|edit|<social>]"
+social-not-found: "&cSocial network '&e{social}&c' not found."
+social-executed: "&a{social}&a command executed."
 
 # Social networks
 social-click-message: "&eClick to visit &b{social}"
@@ -30,19 +25,20 @@ social-link-copied: "&aLink copied to clipboard!"
 reward-received: "&aYou received a reward for checking our &b{social}&a!"
 
 # Help and List
-help-header: "&8&m                    &r &bX-Socials &8&m                    "
+help-header: "<center>&8&m━━━━━━━&r <gradient:#00B4DB:#0083B0><bold>X-Socials</bold></gradient> &8&m━━━━━━━"
 help-title: "&7Available commands:"
 help-list: "&e/xsocials list &7- List all social networks"
+help-version: "&e/xsocials version &7- Show plugin version"
 help-gui: "&e/xsocials -gui &7- Open main social menu"
 help-reload: "&e/xsocials reload &7- Reload configuration"
 help-update: "&e/xsocials update &7- Check for updates"
-help-footer: "&8&m                                                  "
-list-header: "&8&m                    &r &bSocial Networks &8&m                    "
+help-footer: "<center>&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+list-header: "<center>&8&m━━━━━━━&r <gradient:#00B4DB:#0083B0><bold>Social Networks</bold></gradient> &8&m━━━━━━━"
 list-format: "&e/{0} &7- {1}"
-list-footer: "&8&m                                                  "
+list-footer: "<center>&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # GUI Editor
-gui-main-title: "&bSocial Networks"
+gui-main-title: "&8Social Networks"
 gui-editor-title: "&8Editing: &b{0}"
 gui-confirm-delete-title: "&4Confirm Deletion?"
 gui-item-edit-info-lore: "&7Editing properties..."
@@ -61,3 +57,26 @@ gui-item-delete-name: "&cDelete Social"
 gui-item-delete-lore: "&7Click to remove this network"
 gui-item-confirm-name: "&aConfirm"
 gui-item-cancel-name: "&cCancel"
+gui-item-social-command: "&7Command: &e/{0}"
+gui-item-social-link: "&7Link: &f{0}"
+gui-item-social-edit: "&eClick to Edit Settings"
+gui-item-edit-hover-name: "&eEdit Hover Tooltip"
+gui-item-edit-hover-lore: "&7Current: &f{0}"
+gui-item-edit-rewards-name: "&eEdit Rewards"
+gui-item-edit-rewards-lore: "&7Click to edit reward commands"
+gui-item-create-name: "&aCreate New Social"
+gui-item-create-lore: "&7Click to create a new social network"
+chat-input-create: "&aEnter the name for the new social network (e.g. 'tiktok') or 'cancel':"
+chat-input-invalid-name: "&cInvalid name! Only letters, numbers, and underscores."
+chat-input-command: "&aEnter new command (or 'cancel'):"
+chat-input-permission: "&aEnter permission (or 'none', 'cancel'):"
+chat-input-link: "&aEnter new link (or 'cancel'):"
+chat-input-hover: "&aEnter hover tooltip message (or 'cancel'):"
+chat-input-saved: "&aChanges saved!"
+chat-input-files-only: "&eEditing this property is done via files for safety."
+gui-error-not-found: "&cError: Social network not found."
+gui-error-file-not-found: "&cError: Configuration file not found."
+gui-message-deleted: "&cSocial network deleted."
+gui-changes-discarded: "&eChanges discarded."
+gui-unsaved-warning: "&cYou have unsaved changes! Press again to discard."
+chat-input-name: "&aEnter new name (or 'cancel'):"

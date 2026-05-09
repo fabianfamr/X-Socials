@@ -1,7 +1,7 @@
 # ==========================================================
 # Social Network Template
 # ==========================================================
-# This is a base template used by the plugin to ensure all 
+# This is a base template used by the plugin to ensure all
 # social network files have the latest settings.
 # ==========================================================
 
@@ -14,25 +14,25 @@ template:
 
   # The primary command (e.g., custom).
   command: custom
-  
+
   # Aliases for the command.
   aliases:
     - example
-  
+
   # Permission node.
   permission: ""
-  
+
   # External link.
   link: https://example.com
-  
+
   # GUI appearance.
   gui-item:
     type: BLOCK
     material: PAPER
-  
+
   # Chat hover text.
   hover: "&eClick here!"
-  
+
   # Messages sent on use.
   message:
     - "&eYou are visiting our &bCustom &enetwork!"
@@ -41,3 +41,19 @@ template:
   # First-visit rewards.
   rewards:
     commands: []
+
+  # Cooldown (in seconds). Set to 0 to disable.
+  cooldown:
+    seconds: 0
+
+  # Sound effect on use. Set to "none" to disable.
+  sound:
+    name: ""
+    volume: 1.0
+    pitch: 1.0
+
+  # Title on use. Set enable to false to disable.
+  title:
+    enable: false
+    title: "&b{social}"
+    subtitle: "&7Click to visit!"

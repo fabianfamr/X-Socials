@@ -62,7 +62,7 @@ public class LanguageManager {
         if (message == null) {
             return ChatColor.RED + "Mensaje no encontrado: " + key;
         }
-        return ChatColor.translateAlternateColorCodes('&', message);
+        return com.fabian.xsocials.utils.ColorUtils.translate(message);
     }
 
     public String getMessage(String key, String... replacements) {
@@ -82,7 +82,7 @@ public class LanguageManager {
             return ChatColor.DARK_GRAY + "[" + ChatColor.AQUA + "X-Socials" + ChatColor.DARK_GRAY + "] "
                     + ChatColor.RESET;
         }
-        return ChatColor.translateAlternateColorCodes('&', prefix);
+        return com.fabian.xsocials.utils.ColorUtils.translate(prefix);
     }
 
     public void reload() {

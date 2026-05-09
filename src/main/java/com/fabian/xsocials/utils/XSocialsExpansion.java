@@ -34,29 +34,51 @@ public class XSocialsExpansion extends PlaceholderExpansion {
         return true;
     }
 
-    @Override
+@Override
     public String onRequest(OfflinePlayer player, @NotNull String params) {
-        // %xsocials_<name>_link%
-        // %xsocials_<name>_command%
-        
         String[] split = params.split("_");
         if (split.length < 2) return null;
-        
+
+        // Global stats placeholders
+        if (params.equalsIgnoreCase("total_uses")) {
+            return String.valueOf(plugin.getStatsManager().getTotalUses());
+        }
+
+        if (split[0].equalsIgnoreCase("total") && split[1].equalsIgnoreCase("uses")) {
+            return String.valueOf(plugin.getStatsManager().getTotalUses());
+        }
+
+        // Player stats placeholders
+        if (split[0].equalsIgnoreCase("player") && split.length >= 3) {
+            if (split[1].equalsIgnoreCase("has")) {
+                String socialName = params.substring(params.indexOf("_", 7) + 1);
+                if (player.getPlayer() != null) {
+                    return String.valueOf(plugin.getSocialManager().hasClaimedReward(player.getUniqueId(), socialName));
+                }
+            }
+            return null;
+        }
+
+        // Social network placeholders: %xsocials_<name>_link% and %xsocials_<name>_command%
         String socialName = split[0];
         String type = split[1];
-        
+
         SocialNetwork social = plugin.getSocialManager().getSocialNetworks().values().stream()
                 .filter(s -> s.getName().equalsIgnoreCase(socialName))
                 .findFirst().orElse(null);
-                
+
         if (social == null) return null;
-        
+
         if (type.equalsIgnoreCase("link")) {
             return social.getLink();
         } else if (type.equalsIgnoreCase("command")) {
             return social.getCommand();
+        } else if (type.equalsIgnoreCase("uses")) {
+            return String.valueOf(plugin.getStatsManager().getSocialUses(socialName));
+        } else if (type.equalsIgnoreCase("enabled")) {
+            return social.isEnabled() ? "true" : "false";
         }
-        
+
         return null;
     }
 }

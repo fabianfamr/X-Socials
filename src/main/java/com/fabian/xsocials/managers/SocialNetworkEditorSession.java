@@ -14,6 +14,7 @@ public class SocialNetworkEditorSession {
     private final String originalName;
     private final File file;
 
+    private String name;
     private String command;
     private List<String> aliases;
     private String permission;
@@ -24,7 +25,8 @@ public class SocialNetworkEditorSession {
 
     public SocialNetworkEditorSession(XSocials plugin, SocialNetwork social, File file) {
         this.plugin = plugin;
-        this.originalName = social.getName(); // The key in the yaml (e.g. 'discord')
+        this.originalName = social.getName();
+        this.name = social.getName();
         this.file = file;
 
         // Initialize with current values
@@ -98,11 +100,43 @@ public class SocialNetworkEditorSession {
         return originalName;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean hasChanges() {
+        if (!originalName.equals(name)) return true;
+        SocialNetwork original = plugin.getSocialManager().getSocialNetworks().values().stream()
+                .filter(s -> s.getName().equals(originalName)).findFirst().orElse(null);
+        if (original == null) return true;
+        String origPerm = original.getPermission() != null ? original.getPermission() : "";
+        String origLink = original.getLink() != null ? original.getLink() : "";
+        String origHover = original.getHover() != null ? original.getHover() : "";
+        String curPerm = permission != null ? permission : "";
+        String curLink = link != null ? link : "";
+        String curHover = hover != null ? hover : "";
+        return !command.equals(original.getCommand()) ||
+               !curPerm.equals(origPerm) ||
+               !curLink.equals(origLink) ||
+               !curHover.equals(origHover);
+    }
+
     public void save() {
-        // Use ConfigUtils to update the file preserving comments
         if (!file.exists()) {
             plugin.getLogger().severe("Cannot save session: File not found " + file.getName());
             return;
+        }
+
+        if (!originalName.equals(name)) {
+            ConfigUtils.renameRootKey(file, originalName, name);
+            File newFile = new File(file.getParentFile(), name + ".yml");
+            if (!newFile.exists() && file.renameTo(newFile)) {
+                plugin.getLogger().info("Renamed social file from " + originalName + " to " + name);
+            }
         }
 
         ConfigUtils.updateKey(file, "command", command);
@@ -112,9 +146,8 @@ public class SocialNetworkEditorSession {
 
         ConfigUtils.updateList(file, "aliases", aliases);
         ConfigUtils.updateList(file, "message", messages);
-        ConfigUtils.updateList(file, "commands", rewardCommands); // Inside 'rewards' section
+        ConfigUtils.updateList(file, "rewards.commands", rewardCommands);
 
-        // Reload the specific social network or all
         plugin.getSocialManager().reload();
     }
 }

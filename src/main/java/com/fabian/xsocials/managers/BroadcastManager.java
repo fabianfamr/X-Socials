@@ -1,9 +1,9 @@
 package com.fabian.xsocials.managers;
 
 import com.fabian.xsocials.XSocials;
+import com.fabian.xsocials.utils.SchedulerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class BroadcastManager {
     private File broadcastsFile;
     private YamlConfiguration broadcastsConfig;
     private List<List<String>> broadcastGroups;
-    private BukkitTask broadcastTask;
+    private Object broadcastTask;
     private int currentIndex = 0;
     private final Random random = new Random();
 
@@ -43,32 +43,15 @@ public class BroadcastManager {
 
     public void startTask() {
         if (broadcastTask != null) {
-            broadcastTask.cancel();
+            SchedulerUtils.cancelTask(broadcastTask);
         }
 
         if (!plugin.getConfig().getBoolean("broadcasts.enable", true) || broadcastGroups.isEmpty()) {
             return;
         }
 
-        long interval = plugin.getConfig().getLong("broadcasts.interval", 300) * 20L;
-        
-        if (isFolia()) {
-            // Folia: Use GlobalRegionScheduler via reflection to compile with Spigot API
-            try {
-                Object scheduler = Bukkit.class.getMethod("getGlobalRegionScheduler").invoke(null);
-                scheduler.getClass().getMethod("runAtFixedRate", 
-                    org.bukkit.plugin.Plugin.class, 
-                    java.util.function.Consumer.class, 
-                    long.class, 
-                    long.class
-                ).invoke(scheduler, plugin, (java.util.function.Consumer<Object>) task -> sendBroadcast(), 20L, interval);
-            } catch (Exception e) {
-                plugin.getLogger().warning("Failed to start Folia scheduler: " + e.getMessage());
-            }
-        } else {
-            // Standard: Spigot/Paper/Bukkit
-            broadcastTask = Bukkit.getScheduler().runTaskTimer(plugin, this::sendBroadcast, interval, interval);
-        }
+        long interval = plugin.getConfig().getLong("broadcasts.interval", 300);
+        broadcastTask = SchedulerUtils.runTimer(plugin, this::sendBroadcast, interval, interval);
     }
 
     private void sendBroadcast() {
@@ -92,7 +75,9 @@ public class BroadcastManager {
             } else {
                 // Remove tags if on bare Bukkit or if no tags found
                 String plainMsg = msg.replaceAll("\\[hover=\".*?\"\\](.*?)\\[/hover\\]", "$1");
-                Bukkit.broadcastMessage(plainMsg);
+                for (org.bukkit.entity.Player player : Bukkit.getOnlinePlayers()) {
+                    player.sendMessage(plainMsg);
+                }
             }
         }
     }
@@ -133,7 +118,6 @@ public class BroadcastManager {
         }
         
         Bukkit.getOnlinePlayers().forEach(p -> p.spigot().sendMessage(finalComponent));
-        Bukkit.getConsoleSender().sendMessage(finalComponent.toLegacyText());
     }
 
     @SuppressWarnings("deprecation")
@@ -156,15 +140,6 @@ public class BroadcastManager {
                 net.md_5.bungee.api.chat.HoverEvent.Action.SHOW_TEXT, 
                 new net.md_5.bungee.api.chat.BaseComponent[]{new net.md_5.bungee.api.chat.TextComponent(text)}
             ));
-        }
-    }
-
-    private boolean isFolia() {
-        try {
-            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
         }
     }
 

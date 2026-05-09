@@ -84,3 +84,31 @@ discord:
     commands:
       - "eco give {player} 150"
       - "msg {player} &aYou received $150 for visiting our Discord!"
+
+  # ----------------------------------------------------------
+  # Cooldown (seconds)
+  # ----------------------------------------------------------
+  # Prevent players from using this command too frequently.
+  # Set to 0 to disable.
+  cooldown:
+    seconds: 0
+
+  # ----------------------------------------------------------
+  # Sound Effect
+  # ----------------------------------------------------------
+  # Play a sound when a player uses this social command.
+  # Leave empty or "none" to disable.
+  # Examples: ENTITY_PLAYER_LEVELUP, ENTITY_BLAZE_DEATH, UI_BUTTON_CLICK
+  sound:
+    name: ""
+    volume: 1.0
+    pitch: 1.0
+
+  # ----------------------------------------------------------
+  # Title Message
+  # ----------------------------------------------------------
+  # Show a title when a player uses this social command.
+  title:
+    enable: false
+    title: "&b{social}"
+    subtitle: "&7Click to visit!"

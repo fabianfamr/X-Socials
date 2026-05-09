@@ -18,34 +18,43 @@ public class ConfigUtils {
             List<String> newLines = new ArrayList<>();
             boolean updated = false;
 
-            // Simple pattern matching for " key: value" or "key: value"
-            // We assume the key is the last part of the path if it's dot notation,
-            // but for this plugin we are mostly editing values inside a section.
-            // Since our structure is social -> key: value, we need to be careful.
-            // But actually, we are editing specific files per social network, so key is
-            // usually direct.
-            // Example: "command: discord"
-
             String searchKey = key + ":";
+            int baseIndent = -1;
 
             for (String line : lines) {
                 String trimmed = line.trim();
-                if (trimmed.startsWith(searchKey) && !trimmed.startsWith("#")) {
-                    // Calculate indentation
-                    int indentation = line.indexOf(searchKey);
-                    String indentStr = line.substring(0, indentation);
 
-                    // Quote functionality if needed, for strings with special chars
-                    String valueToSave = newValue;
-                    if (valueToSave.contains("&") || valueToSave.contains(" ")) {
-                        valueToSave = "\"" + valueToSave + "\"";
-                    }
-
-                    newLines.add(indentStr + key + ": " + valueToSave);
-                    updated = true;
-                } else {
-                    newLines.add(line);
+                if (baseIndent == -1 && trimmed.startsWith(searchKey)) {
+                    baseIndent = line.indexOf(searchKey);
                 }
+
+                if (baseIndent != -1 && trimmed.startsWith(searchKey)) {
+                    int indent = line.indexOf(searchKey);
+                    if (indent == baseIndent) {
+                        String valueToSave = newValue;
+                        if (!valueToSave.isEmpty() && !valueToSave.startsWith("\"") && !valueToSave.endsWith("\"")
+                                && (valueToSave.contains("&") || valueToSave.contains(" ") || valueToSave.contains(":"))) {
+                            valueToSave = "\"" + valueToSave.replace("\"", "\\\"") + "\"";
+                        }
+                        newLines.add(line.substring(0, indent) + key + ": " + valueToSave);
+                        updated = true;
+                        continue;
+                    }
+                }
+
+                if (trimmed.startsWith("#")) {
+                    newLines.add(line);
+                    continue;
+                }
+
+                if (baseIndent != -1 && !trimmed.isEmpty()) {
+                    int currentIndent = line.length() - line.replaceFirst("^\\s*", "").length();
+                    if (currentIndent <= baseIndent && !trimmed.equals(line.trim())) {
+                        baseIndent = -1;
+                    }
+                }
+
+                newLines.add(line);
             }
 
             if (updated) {
@@ -126,6 +135,36 @@ public class ConfigUtils {
                 Files.write(file.toPath(), newLines, StandardCharsets.UTF_8);
             }
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void renameRootKey(File file, String oldName, String newName) {
+        if (oldName.equals(newName)) return;
+        try {
+            List<String> lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
+            List<String> newLines = new ArrayList<>();
+            boolean renamed = false;
+
+            for (String line : lines) {
+                String trimmed = line.trim();
+                if (!renamed && trimmed.equals(oldName + ":")) {
+                    int indent = line.length() - line.replaceFirst("^\\s*", "").length();
+                    String indentStr = line.substring(0, indent);
+                    newLines.add(indentStr + newName + ":");
+                    renamed = true;
+                } else if (!renamed && trimmed.startsWith(oldName + ".")) {
+                    newLines.add(line.replace(oldName + ".", newName + "."));
+                    renamed = true;
+                } else {
+                    newLines.add(line);
+                }
+            }
+
+            if (renamed) {
+                Files.write(file.toPath(), newLines, StandardCharsets.UTF_8);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
