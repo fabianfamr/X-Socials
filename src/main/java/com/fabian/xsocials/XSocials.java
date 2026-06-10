@@ -10,7 +10,15 @@ import com.fabian.xsocials.utils.ConfigUpdater;
 import com.fabian.xsocials.utils.UpdateChecker;
 import com.fabian.xsocials.utils.StatsManager;
 import com.fabian.xsocials.metrics.Metrics;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 public class XSocials extends JavaPlugin {
 
@@ -36,7 +44,7 @@ public class XSocials extends JavaPlugin {
             String version = getDescription().getVersion();
             log(org.bukkit.ChatColor.DARK_AQUA + "Enabling X-Socials v" + version);
 
-            // Save and update configuration
+            // Save and update configuration (includes version-based backup + merge)
             saveDefaultConfig();
 
             // Initialize managers
@@ -48,8 +56,8 @@ public class XSocials extends JavaPlugin {
 
             log(org.bukkit.ChatColor.GREEN + "Successfully enabled!");
 
-            // Initialize bStats
-            if (getConfig().getBoolean("bstats.enabled", true)) {
+            // Initialize metrics
+            if (getConfig().getBoolean("metrics", true)) {
                 metrics = new Metrics(this, 24072);
                 metrics.addCustomChart(new Metrics.SingleLineChart("total_uses", () -> statsManager.getTotalUses()));
                 metrics.addCustomChart(new Metrics.SimpleBarChart("social_uses", statsManager::getAllSocialUses));
@@ -84,6 +92,41 @@ public class XSocials extends JavaPlugin {
     @Override
     public void saveDefaultConfig() {
         super.saveDefaultConfig();
+
+        File configFile = new File(getDataFolder(), "config.yml");
+
+        // Read the 'code' from the JAR default config
+        int jarCode = 0;
+        try (InputStream is = getResource("config.yml")) {
+            if (is != null) {
+                YamlConfiguration jarConfig = YamlConfiguration.loadConfiguration(
+                        new InputStreamReader(is, StandardCharsets.UTF_8));
+                jarCode = jarConfig.getInt("code", 0);
+            }
+        } catch (Exception ignored) {
+        }
+
+        // Read the 'code' from the on-disk config
+        int diskCode = 0;
+        if (configFile.exists()) {
+            YamlConfiguration diskConfig = YamlConfiguration.loadConfiguration(configFile);
+            diskCode = diskConfig.getInt("code", 0);
+        }
+
+        // If the JAR ships a newer config version, back up the old one first
+        if (diskCode < jarCode) {
+            File backupFile = new File(getDataFolder(), "config_old.yml");
+            try {
+                Files.copy(configFile.toPath(), backupFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                log(org.bukkit.ChatColor.YELLOW + "Found a newer configuration version! ("
+                        + diskCode + " -> " + jarCode + ")");
+                log(org.bukkit.ChatColor.YELLOW + "Old config backed up to config_old.yml");
+            } catch (Exception e) {
+                getLogger().warning("Could not back up config.yml: " + e.getMessage());
+            }
+        }
+
+        // Run the existing merge/update logic to add any missing keys
         ConfigUpdater.update(this, "config.yml", "config.yml");
     }
 

@@ -31,6 +31,14 @@ prefix: "&8[&bX-Socials&8]&r"
 # If an update is found, administrators will be notified in console and game.
 check-updates: true
 
+# debug: Enables verbose logging for troubleshooting.
+# Set to true only when asked by support.
+debug: false
+
+# metrics: Anonymous usage statistics to help improve the plugin.
+# Set to false to opt-out of metrics tracking.
+metrics: true
+
 # ----------------------------------------------------------
 # Broadcast System
 # ----------------------------------------------------------
@@ -71,17 +79,16 @@ cooldown:
   seconds: 0
 
 # ----------------------------------------------------------
-# bStats Metrics
-# ----------------------------------------------------------
-# Anonymous usage statistics to help improve the plugin.
-# Set to false to opt-out of bStats tracking.
-bstats:
-  enabled: true
-
-# ----------------------------------------------------------
 # GUI Editor Settings
 # ----------------------------------------------------------
 editor:
   # Time in seconds before changes are auto-discarded when closing without saving.
   # Set to 0 to disable the confirmation reopen.
   confirm-close-delay: 5
+
+# ----------------------------------------------------------
+# Internal Configuration Version
+# ----------------------------------------------------------
+# DO NOT CHANGE THIS VALUE MANUALLY.
+# Used by the plugin to detect when a configuration update is needed.
+code: 1

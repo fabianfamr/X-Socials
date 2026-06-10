@@ -2,9 +2,11 @@ name: X-Socials
 version: 1.3
 api-version: 1.13
 main: com.fabian.xsocials.XSocials
-authors: [Fabian]
-description: Simple social networks plugin for Minecraft
 folia-supported: true
+authors: [Fabian]
+website: https://xproyects.qzz.io
+description: "Social networks plugin for Paper, Purpur, Folia & Bukkit (1.8.8+)."
+softdepend: [PlaceholderAPI]
 
 commands:
   xsocials:
