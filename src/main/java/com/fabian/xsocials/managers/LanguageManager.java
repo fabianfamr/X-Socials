@@ -2,6 +2,7 @@ package com.fabian.xsocials.managers;
 
 import com.fabian.xsocials.XSocials;
 import com.fabian.xsocials.utils.ConfigUpdater;
+import com.fabian.xsocials.utils.DebugLogger;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -23,6 +24,7 @@ public class LanguageManager {
 
     private void loadLanguage() {
         String language = plugin.getConfig().getString("language", "EN");
+        DebugLogger.debug("LanguageManager", "Loading language: " + language);
         String fileName = language.toLowerCase();
         if (!fileName.endsWith(".yml")) {
             fileName += ".yml";
@@ -48,6 +50,7 @@ public class LanguageManager {
                     new InputStreamReader(defaultStream, StandardCharsets.UTF_8));
             languageConfig.setDefaults(defaultConfig);
         }
+        DebugLogger.debug("LanguageManager", "Language file loaded: " + fileName);
     }
 
     public void saveDefaultConfig() {
@@ -60,6 +63,7 @@ public class LanguageManager {
     public String getMessage(String key) {
         String message = languageConfig.getString(key);
         if (message == null) {
+            DebugLogger.debug("LanguageManager", "Missing message key: " + key);
             return ChatColor.RED + "Mensaje no encontrado: " + key;
         }
         return com.fabian.xsocials.utils.ColorUtils.translate(message);

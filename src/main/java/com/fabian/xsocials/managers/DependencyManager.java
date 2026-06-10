@@ -1,6 +1,7 @@
 package com.fabian.xsocials.managers;
 
 import com.fabian.xsocials.XSocials;
+import com.fabian.xsocials.utils.DebugLogger;
 import net.byteflux.libby.BukkitLibraryManager;
 import net.byteflux.libby.Library;
 
@@ -29,12 +30,15 @@ public class DependencyManager {
     }
 
     public void loadDependencies() {
+        DebugLogger.debug("DependencyManager", "Loading runtime dependencies...");
         try {
             plugin.log("Loading runtime dependencies via X-API...");
             loadAdventureDependencies();
             plugin.log("All dependencies loaded successfully!");
+            DebugLogger.debug("DependencyManager", "All dependencies loaded successfully");
         } catch (Exception e) {
             plugin.getLogger().severe("Failed to load runtime dependencies! " + e.getMessage());
+            DebugLogger.debug("DependencyManager", "Failed to load dependencies", e);
         }
     }
 

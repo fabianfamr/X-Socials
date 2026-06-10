@@ -31,6 +31,7 @@ public class UpdateChecker {
         com.fabian.xsocials.utils.SchedulerUtil.runAsync(plugin, () -> {
             try {
                 String currentVersion = plugin.getDescription().getVersion();
+                DebugLogger.debug("UpdateChecker", "Checking for updates (current=" + currentVersion + ")");
 
                 // Spigot API for resource versions
                 URL url = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + resourceId);
@@ -49,6 +50,7 @@ public class UpdateChecker {
 
                 if (latestVersion != null && isNewer(currentVersion, latestVersion)) {
                     this.updateAvailable = true;
+                    DebugLogger.debug("UpdateChecker", "Update available: " + currentVersion + " -> " + latestVersion);
 
                     if (sender != null) {
                         sender.sendMessage(lang.getPrefix() + " "
@@ -63,6 +65,7 @@ public class UpdateChecker {
                                 lang.getPrefix() + " " + lang.getMessage("update-download", getDownloadUrl()));
                     }
                 } else {
+                    DebugLogger.debug("UpdateChecker", "Plugin is up to date (" + currentVersion + ")");
                     if (sender != null) {
                         sender.sendMessage(lang.getPrefix() + " " + lang.getMessage("update-current"));
                     } else {

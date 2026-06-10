@@ -18,6 +18,7 @@ public class StatsManager {
     public StatsManager(XSocials plugin) {
         this.plugin = plugin;
         this.statsFile = new File(plugin.getDataFolder(), "stats.yml");
+        DebugLogger.debug("StatsManager", "Initializing...");
         loadStats();
     }
 
@@ -36,12 +37,14 @@ public class StatsManager {
         if (!statsConfig.isSet("socials")) {
             statsConfig.createSection("socials");
         }
+        DebugLogger.debug("StatsManager", "Stats loaded (total-uses=" + statsConfig.getInt("total-uses", 0) + ")");
     }
 
     public void incrementUse(String socialName) {
         statsConfig.set("total-uses", statsConfig.getInt("total-uses", 0) + 1);
         statsConfig.set("socials." + socialName.toLowerCase() + ".uses",
             statsConfig.getInt("socials." + socialName.toLowerCase() + ".uses", 0) + 1);
+        DebugLogger.debug("StatsManager", "Incremented use for '" + socialName + "'");
         saveStats();
     }
 
@@ -102,10 +105,12 @@ public class StatsManager {
             statsConfig.save(statsFile);
         } catch (Exception e) {
             plugin.getLogger().warning("Failed to save stats: " + e.getMessage());
+            DebugLogger.debug("StatsManager", "Failed to save stats", e);
         }
     }
 
     public void reload() {
+        DebugLogger.debug("StatsManager", "Reloading...");
         loadStats();
     }
 }

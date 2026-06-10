@@ -20,6 +20,7 @@ public class ConfigUpdater {
      * @param resourcePath The path to the default resource in the JAR.
      */
     public static void update(XSocials plugin, String fileName, String resourcePath) {
+        DebugLogger.debug("ConfigUpdater", "Updating config: " + fileName);
         File configFile = new File(plugin.getDataFolder(), fileName);
         if (!configFile.exists()) {
             plugin.saveResource(resourcePath, false);
@@ -37,6 +38,9 @@ public class ConfigUpdater {
             if (changed) {
                 userConfig.save(configFile);
                 plugin.log(org.bukkit.ChatColor.AQUA + "Updated configuration file: " + fileName);
+                DebugLogger.debug("ConfigUpdater", "Keys merged into " + fileName);
+            } else {
+                DebugLogger.debug("ConfigUpdater", "No changes needed for " + fileName);
             }
         } catch (Exception e) {
             plugin.getLogger().severe("Could not update " + fileName + ": " + e.getMessage());
@@ -71,6 +75,7 @@ public class ConfigUpdater {
             if (changed) {
                 userConfig.save(configFile);
                 plugin.log(org.bukkit.ChatColor.AQUA + "Updated dynamic file: " + fileName + " (" + userRootKey + ")");
+                DebugLogger.debug("ConfigUpdater", "Dynamic update applied to " + fileName);
             }
         } catch (Exception e) {
             plugin.getLogger().severe("Could not update dynamic " + fileName + ": " + e.getMessage());

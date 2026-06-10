@@ -4,6 +4,7 @@ import com.fabian.xsocials.XSocials;
 import com.fabian.xsocials.commands.DynamicSocialCommand;
 import com.fabian.xsocials.models.SocialNetwork;
 import com.fabian.xsocials.utils.ConfigUpdater;
+import com.fabian.xsocials.utils.DebugLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.configuration.ConfigurationSection;
@@ -25,6 +26,7 @@ public class SocialManager {
         this.socialNetworks = new HashMap<>();
         this.socialFiles = new HashMap<>();
         this.socialsFolder = new File(plugin.getDataFolder(), "socials");
+        DebugLogger.debug("SocialManager", "Initializing (folder: " + socialsFolder.getPath() + ")");
 
         // Create folder and save defaults
         saveDefaultConfig();
@@ -49,6 +51,7 @@ public class SocialManager {
     public void loadSocialNetworks() {
         socialNetworks.clear();
         socialFiles.clear();
+        DebugLogger.debug("SocialManager", "Loading social networks from folder...");
 
         File[] files = socialsFolder.listFiles((dir, name) -> name.endsWith(".yml"));
         if (files == null || files.length == 0) {
@@ -108,9 +111,11 @@ public class SocialManager {
                 socialNetworks.put(command.toLowerCase(), social);
                 socialFiles.put(socialName, file);
                 loadedCount++;
+                DebugLogger.debug("SocialManager", "Loaded: " + socialName + " (cmd=" + command + ", enabled=" + enabled + ")");
 
             } catch (Exception e) {
                 plugin.getLogger().severe("Error al cargar " + file.getName() + ": " + e.getMessage());
+                DebugLogger.debug("SocialManager", "Failed to load " + file.getName(), e);
             }
         }
 
@@ -121,6 +126,7 @@ public class SocialManager {
         if (loadedCount > 0) {
             plugin.log(org.bukkit.ChatColor.GREEN + "Social networks loaded: " + loadedCount);
         }
+        DebugLogger.debug("SocialManager", "Finished loading " + loadedCount + " social networks");
     }
 
     public void createNewSocial(String name) {
@@ -179,6 +185,7 @@ public class SocialManager {
     }
 
     public void registerSocialCommands() {
+        DebugLogger.debug("SocialManager", "Registering dynamic social commands...");
         try {
             CommandMap commandMap = null;
             
@@ -207,15 +214,19 @@ public class SocialManager {
                 if (social.shouldRegisterCommand()) {
                     DynamicSocialCommand dynamicCommand = new DynamicSocialCommand(social, plugin);
                     commandMap.register(plugin.getName(), dynamicCommand);
+                    DebugLogger.debug("SocialManager", "Registered command: /" + social.getCommand());
                 }
             }
+            DebugLogger.debug("SocialManager", "All dynamic commands registered");
 
         } catch (Exception e) {
             plugin.getLogger().severe("Error registering dynamic commands: " + e.getMessage());
+            DebugLogger.debug("SocialManager", "Error registering dynamic commands", e);
         }
     }
 
     public void reload() {
+        DebugLogger.debug("SocialManager", "Reloading...");
         loadSocialNetworks();
         registerSocialCommands();
     }
@@ -237,7 +248,9 @@ public class SocialManager {
     }
 
     public void executeSocialCommand(org.bukkit.command.CommandSender sender, SocialNetwork social) {
+        DebugLogger.debug("SocialManager", "Executing '" + social.getName() + "' for " + sender.getName());
         if (!social.isEnabled()) {
+            DebugLogger.debug("SocialManager", "Social '" + social.getName() + "' is disabled");
             sender.sendMessage(plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("social-not-found").replace("{social}", social.getName()));
             return;
         }

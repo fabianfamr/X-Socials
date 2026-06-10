@@ -3,6 +3,7 @@ package com.fabian.xsocials.managers;
 import com.fabian.xsocials.XSocials;
 import com.fabian.xsocials.models.SocialNetwork;
 import com.fabian.xsocials.utils.ConfigUtils;
+import com.fabian.xsocials.utils.DebugLogger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class SocialNetworkEditorSession {
         this.originalName = social.getName();
         this.name = social.getName();
         this.file = file;
+        DebugLogger.debug("EditorSession", "Session started for '" + originalName + "'");
 
         // Initialize with current values
         this.command = social.getCommand();
@@ -41,6 +43,7 @@ public class SocialNetworkEditorSession {
     }
 
     public void setCommand(String command) {
+        DebugLogger.debug("EditorSession", "setCommand: " + this.command + " -> " + command);
         this.command = command;
     }
 
@@ -105,6 +108,7 @@ public class SocialNetworkEditorSession {
     }
 
     public void setName(String name) {
+        DebugLogger.debug("EditorSession", "setName: " + this.name + " -> " + name);
         this.name = name;
     }
 
@@ -126,6 +130,7 @@ public class SocialNetworkEditorSession {
     }
 
     public void save() {
+        DebugLogger.debug("EditorSession", "Saving session for '" + originalName + "'...");
         if (!file.exists()) {
             plugin.getLogger().severe("Cannot save session: File not found " + file.getName());
             return;
@@ -149,5 +154,6 @@ public class SocialNetworkEditorSession {
         ConfigUtils.updateList(file, "rewards.commands", rewardCommands);
 
         plugin.getSocialManager().reload();
+        DebugLogger.debug("EditorSession", "Session saved for '" + originalName + "'");
     }
 }

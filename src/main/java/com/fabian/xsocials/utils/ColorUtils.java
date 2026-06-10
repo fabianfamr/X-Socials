@@ -26,10 +26,14 @@ public class ColorUtils {
             Class<?> papiClass = Class.forName("me.clip.placeholderapi.PlaceholderAPI");
             setPlaceholdersMethod = papiClass.getMethod("setPlaceholders", org.bukkit.OfflinePlayer.class, String.class);
             papiAvailable = true;
-        } catch (Exception ignored) {}
+            DebugLogger.debug("ColorUtils", "PlaceholderAPI detected and hooked");
+        } catch (Exception ignored) {
+            DebugLogger.debug("ColorUtils", "PlaceholderAPI not available");
+        }
         try {
             Class.forName("io.papermc.paper.adventure.PaperAudiences");
             paperAdventureAvailable = true;
+            DebugLogger.debug("ColorUtils", "Paper Adventure available");
         } catch (Exception e) {
             paperAdventureAvailable = false;
         }

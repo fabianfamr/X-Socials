@@ -34,8 +34,9 @@ public class XSocialsExpansion extends PlaceholderExpansion {
         return true;
     }
 
-@Override
+    @Override
     public String onRequest(OfflinePlayer player, @NotNull String params) {
+        DebugLogger.debug("PAPI", "onRequest: player=" + (player != null ? player.getName() : "null") + ", params='" + params + "'");
         String[] split = params.split("_");
         if (split.length < 2) return null;
 

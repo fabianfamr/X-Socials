@@ -2,6 +2,7 @@ package com.fabian.xsocials.managers;
 
 import com.fabian.xsocials.XSocials;
 import com.fabian.xsocials.models.SocialNetwork;
+import com.fabian.xsocials.utils.DebugLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -34,6 +35,7 @@ public class GUIManager implements Listener {
     }
 
     public void openMainGUI(Player player) {
+        DebugLogger.debug("GUIManager", "Opening main GUI for " + player.getName());
         String title = plugin.getLanguageManager().getMessage("gui-main-title");
         Inventory gui = Bukkit.createInventory(null, 54, title);
 
@@ -72,6 +74,7 @@ public class GUIManager implements Listener {
     }
 
     public void openEditor(Player player, String socialName) {
+        DebugLogger.debug("GUIManager", "Opening editor for '" + socialName + "' for " + player.getName());
         SocialNetwork social = plugin.getSocialManager().getSocialNetworks().values().stream()
                 .filter(s -> s.getName().equals(socialName))
                 .findFirst().orElse(null);

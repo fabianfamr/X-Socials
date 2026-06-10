@@ -2,6 +2,7 @@ package com.fabian.xsocials.managers;
 
 import com.fabian.xsocials.XSocials;
 import com.fabian.xsocials.utils.SchedulerUtil;
+import com.fabian.xsocials.utils.DebugLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -22,6 +23,7 @@ public class BroadcastManager {
 
     public BroadcastManager(XSocials plugin) {
         this.plugin = plugin;
+        DebugLogger.debug("BroadcastManager", "Initializing...");
         setupFile();
         startTask();
     }
@@ -39,6 +41,7 @@ public class BroadcastManager {
                 broadcastGroups.add(broadcastsConfig.getStringList(key + ".message"));
             }
         }
+        DebugLogger.debug("BroadcastManager", "Loaded " + broadcastGroups.size() + " broadcast groups");
     }
 
     public void startTask() {
@@ -47,15 +50,19 @@ public class BroadcastManager {
         }
 
         if (!plugin.getConfig().getBoolean("broadcasts.enable", true) || broadcastGroups.isEmpty()) {
+            DebugLogger.debug("BroadcastManager", "Broadcasts disabled or empty, not starting timer");
             return;
         }
 
         long interval = plugin.getConfig().getLong("broadcasts.interval", 300);
+        DebugLogger.debug("BroadcastManager", "Starting broadcast timer (interval=" + interval + "s)");
         broadcastTask = SchedulerUtil.runTimer(plugin, this::sendBroadcast, interval, interval);
     }
 
     private void sendBroadcast() {
         if (broadcastGroups.isEmpty()) return;
+
+        DebugLogger.debug("BroadcastManager", "Sending broadcast (index=" + currentIndex + ", groups=" + broadcastGroups.size() + ")");
 
         List<String> messages;
         if (plugin.getConfig().getBoolean("broadcasts.random", false)) {
@@ -153,6 +160,7 @@ public class BroadcastManager {
     }
 
     public void reload() {
+        DebugLogger.debug("BroadcastManager", "Reloading...");
         setupFile();
         startTask();
     }

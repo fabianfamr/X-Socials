@@ -2,6 +2,7 @@ package com.fabian.xsocials.commands;
 
 import com.fabian.xsocials.XSocials;
 import com.fabian.xsocials.models.SocialNetwork;
+import com.fabian.xsocials.utils.DebugLogger;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -33,6 +34,7 @@ public class DynamicSocialCommand extends Command {
 
     @Override
     public boolean execute(CommandSender sender, String label, String[] args) {
+        DebugLogger.debug("DynamicCommand", "/" + label + " executed by " + sender.getName());
         if (args.length > 0) {
             sender.sendMessage(plugin.getLanguageManager().getPrefix() + " " + org.bukkit.ChatColor.RED + "This command does not accept arguments.");
             return true;

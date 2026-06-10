@@ -2,6 +2,7 @@ package com.fabian.xsocials.commands;
 
 import com.fabian.xsocials.XSocials;
 import com.fabian.xsocials.models.SocialNetwork;
+import com.fabian.xsocials.utils.DebugLogger;
 import com.fabian.xsocials.utils.UpdateChecker;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -26,6 +27,8 @@ public class SocialsCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        DebugLogger.debug("SocialsCommand", "Command executed by " + sender.getName() + ": /" + label + " " + String.join(" ", args));
+
         if (args.length > 0 && args[0].equalsIgnoreCase("-gui")) {
             if (!(sender instanceof Player)) {
                 sender.sendMessage(plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("player-only"));
@@ -48,6 +51,7 @@ public class SocialsCommand implements CommandExecutor, TabCompleter {
 
         switch (subCommand) {
             case "reload":
+                DebugLogger.debug("SocialsCommand", "Reload subcommand by " + sender.getName());
                 if (!sender.hasPermission("xsocials.reload")) {
                     sender.sendMessage(plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("no-permission"));
                     return true;
@@ -75,6 +79,7 @@ public class SocialsCommand implements CommandExecutor, TabCompleter {
                 break;
 
             case "edit":
+                DebugLogger.debug("SocialsCommand", "Edit subcommand by " + sender.getName() + ": " + String.join(" ", args));
                 handleEdit(sender, args);
                 break;
 

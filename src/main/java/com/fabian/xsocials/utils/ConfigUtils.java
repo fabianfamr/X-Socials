@@ -59,10 +59,12 @@ public class ConfigUtils {
 
             if (updated) {
                 Files.write(file.toPath(), newLines, StandardCharsets.UTF_8);
+                DebugLogger.debug("ConfigUtils", "updateKey: '" + key + "' in " + file.getName());
             }
 
         } catch (IOException e) {
             e.printStackTrace();
+            DebugLogger.debug("ConfigUtils", "updateKey failed for '" + key + "'", e);
         }
     }
 
@@ -133,10 +135,12 @@ public class ConfigUtils {
 
             if (updated) {
                 Files.write(file.toPath(), newLines, StandardCharsets.UTF_8);
+                DebugLogger.debug("ConfigUtils", "updateList: '" + key + "' in " + file.getName());
             }
 
         } catch (IOException e) {
             e.printStackTrace();
+            DebugLogger.debug("ConfigUtils", "updateList failed for '" + key + "'", e);
         }
     }
 
@@ -164,9 +168,11 @@ public class ConfigUtils {
 
             if (renamed) {
                 Files.write(file.toPath(), newLines, StandardCharsets.UTF_8);
+                DebugLogger.debug("ConfigUtils", "renameRootKey: '" + oldName + "' -> '" + newName + "' in " + file.getName());
             }
         } catch (IOException e) {
             e.printStackTrace();
+            DebugLogger.debug("ConfigUtils", "renameRootKey failed", e);
         }
     }
 }

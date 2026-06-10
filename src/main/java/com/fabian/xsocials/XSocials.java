@@ -7,6 +7,7 @@ import com.fabian.xsocials.managers.SocialManager;
 import com.fabian.xsocials.managers.BroadcastManager;
 import com.fabian.xsocials.managers.GUIManager;
 import com.fabian.xsocials.utils.ConfigUpdater;
+import com.fabian.xsocials.utils.DebugLogger;
 import com.fabian.xsocials.utils.UpdateChecker;
 import com.fabian.xsocials.utils.StatsManager;
 import com.fabian.xsocials.metrics.Metrics;
@@ -39,22 +40,32 @@ public class XSocials extends JavaPlugin {
 
         try {
             // Load libraries before anything else
+            DebugLogger.debug("Enable", "Loading dependencies...");
             new DependencyManager(this).loadDependencies();
+            DebugLogger.debug("Enable", "Dependencies loaded successfully");
 
             String version = getDescription().getVersion();
             log(org.bukkit.ChatColor.DARK_AQUA + "Enabling X-Socials v" + version);
 
             // Save and update configuration (includes version-based backup + merge)
+            DebugLogger.debug("Enable", "Saving/updating default config...");
             saveDefaultConfig();
+            DebugLogger.debug("Enable", "Config updated (debug=" + getConfig().getBoolean("debug", false) + ")");
 
             // Initialize managers
+            DebugLogger.debug("Enable", "Initializing LanguageManager...");
             languageManager = new LanguageManager(this);
+            DebugLogger.debug("Enable", "Initializing SocialManager...");
             socialManager = new SocialManager(this);
+            DebugLogger.debug("Enable", "Initializing GUIManager...");
             guiManager = new GUIManager(this);
+            DebugLogger.debug("Enable", "Initializing BroadcastManager...");
             broadcastManager = new BroadcastManager(this);
+            DebugLogger.debug("Enable", "Initializing StatsManager...");
             statsManager = new StatsManager(this);
 
             log(org.bukkit.ChatColor.GREEN + "Successfully enabled!");
+            DebugLogger.debug("Enable", "All managers initialized successfully");
 
             // Initialize metrics
             if (getConfig().getBoolean("metrics", true)) {
@@ -64,12 +75,18 @@ public class XSocials extends JavaPlugin {
             }
 
             // Register commands
+            DebugLogger.debug("Enable", "Registering commands...");
             registerCommands();
+            DebugLogger.debug("Enable", "Commands registered");
 
             // Register PAPI if available
             if (org.bukkit.Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+                DebugLogger.debug("Enable", "Registering PlaceholderAPI expansion...");
                 new com.fabian.xsocials.utils.XSocialsExpansion(this).register();
                 log(org.bukkit.ChatColor.AQUA + "PlaceholderAPI hooks registered!");
+                DebugLogger.debug("Enable", "PlaceholderAPI expansion registered");
+            } else {
+                DebugLogger.debug("Enable", "PlaceholderAPI not found, skipping expansion");
             }
 
             // Check for updates if enabled
@@ -132,6 +149,7 @@ public class XSocials extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        DebugLogger.debug("Disable", "Plugin disabling...");
         log(org.bukkit.ChatColor.RED + "X-Socials disabled successfully!");
     }
 
@@ -159,20 +177,27 @@ public class XSocials extends JavaPlugin {
     }
 
     public void reload() {
+        DebugLogger.debug("Reload", "Starting full plugin reload...");
         // Reload config
         reloadConfig();
+        DebugLogger.debug("Reload", "Config reloaded");
 
         // Reload language
         languageManager.reload();
+        DebugLogger.debug("Reload", "LanguageManager reloaded");
 
         // Reload socials
         socialManager.reload();
+        DebugLogger.debug("Reload", "SocialManager reloaded");
 
         // Reload broadcasts
         broadcastManager.reload();
+        DebugLogger.debug("Reload", "BroadcastManager reloaded");
 
         // Reload stats
         statsManager.reload();
+        DebugLogger.debug("Reload", "StatsManager reloaded");
+        DebugLogger.debug("Reload", "Full reload complete");
     }
 
     public static XSocials getInstance() {

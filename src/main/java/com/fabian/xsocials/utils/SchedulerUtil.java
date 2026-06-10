@@ -22,6 +22,7 @@ public class SchedulerUtil {
             } catch (ClassNotFoundException e) {
                 isFolia = false;
             }
+            DebugLogger.debug("SchedulerUtil", "Folia detected: " + isFolia);
         }
         return isFolia;
     }
@@ -43,6 +44,7 @@ public class SchedulerUtil {
 
     private static void logFoliaError(String method, Exception e) {
         Bukkit.getLogger().log(Level.WARNING, "[X-Socials] Folia scheduler error in " + method + ": " + e.getMessage());
+        DebugLogger.debug("SchedulerUtil", "Folia scheduler error in " + method, e);
     }
 
     // ========================
