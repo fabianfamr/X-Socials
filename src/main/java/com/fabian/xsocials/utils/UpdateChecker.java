@@ -28,7 +28,7 @@ public class UpdateChecker {
     }
 
     public void checkForUpdates(CommandSender sender) {
-        com.fabian.xsocials.utils.SchedulerUtils.runAsync(plugin, () -> {
+        com.fabian.xsocials.utils.SchedulerUtil.runAsync(plugin, () -> {
             try {
                 String currentVersion = plugin.getDescription().getVersion();
 

@@ -1,7 +1,7 @@
 package com.fabian.xsocials.managers;
 
 import com.fabian.xsocials.XSocials;
-import com.fabian.xsocials.utils.SchedulerUtils;
+import com.fabian.xsocials.utils.SchedulerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -43,7 +43,7 @@ public class BroadcastManager {
 
     public void startTask() {
         if (broadcastTask != null) {
-            SchedulerUtils.cancelTask(broadcastTask);
+            SchedulerUtil.cancelTask(broadcastTask);
         }
 
         if (!plugin.getConfig().getBoolean("broadcasts.enable", true) || broadcastGroups.isEmpty()) {
@@ -51,7 +51,7 @@ public class BroadcastManager {
         }
 
         long interval = plugin.getConfig().getLong("broadcasts.interval", 300);
-        broadcastTask = SchedulerUtils.runTimer(plugin, this::sendBroadcast, interval, interval);
+        broadcastTask = SchedulerUtil.runTimer(plugin, this::sendBroadcast, interval, interval);
     }
 
     private void sendBroadcast() {

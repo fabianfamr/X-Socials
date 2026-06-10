@@ -272,7 +272,7 @@ public class SocialManager {
                 boolean hasReward = social.getRewardCommands() != null && !social.getRewardCommands().isEmpty();
                 if (hasReward) {
                     String safePlayerName = sanitizePlayerName(player.getName());
-                    com.fabian.xsocials.utils.SchedulerUtils.runSync(plugin, () -> {
+                    com.fabian.xsocials.utils.SchedulerUtil.runSync(plugin, () -> {
                         for (String cmd : social.getRewardCommands()) {
                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd.replace("{player}", safePlayerName));
                         }

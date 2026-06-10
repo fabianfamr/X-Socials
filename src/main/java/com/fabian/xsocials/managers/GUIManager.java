@@ -434,7 +434,7 @@ public class GUIManager implements Listener {
         String context = chatInputContext.remove(player.getUniqueId());
 
         if (message.equalsIgnoreCase("cancel")) {
-            com.fabian.xsocials.utils.SchedulerUtils.runEntity(plugin, player, () -> {
+            com.fabian.xsocials.utils.SchedulerUtil.runEntity(plugin, player, () -> {
                 SocialNetworkEditorSession s = editorSessions.get(player.getUniqueId());
                 if (s != null)
                     openEditor(player, s.getOriginalName());
@@ -447,13 +447,13 @@ public class GUIManager implements Listener {
         if (context.equals("CREATE_SOCIAL")) {
             if (!message.matches("^[a-zA-Z0-9_]+$")) {
                 player.sendMessage(plugin.getLanguageManager().getMessage("chat-input-invalid-name"));
-                com.fabian.xsocials.utils.SchedulerUtils.runEntity(plugin, player, () -> openMainGUI(player));
+                com.fabian.xsocials.utils.SchedulerUtil.runEntity(plugin, player, () -> openMainGUI(player));
                 return;
             }
-            com.fabian.xsocials.utils.SchedulerUtils.runAsync(plugin, () -> {
+            com.fabian.xsocials.utils.SchedulerUtil.runAsync(plugin, () -> {
                 plugin.getSocialManager().createNewSocial(message.toLowerCase());
                 String socialName = message.toLowerCase();
-                com.fabian.xsocials.utils.SchedulerUtils.runEntity(plugin, player, () -> {
+                com.fabian.xsocials.utils.SchedulerUtil.runEntity(plugin, player, () -> {
                     if (!player.isOnline())
                         return;
                     plugin.getSocialManager().reload();
@@ -488,7 +488,7 @@ public class GUIManager implements Listener {
                 break;
         }
 
-        com.fabian.xsocials.utils.SchedulerUtils.runEntity(plugin, player,
+        com.fabian.xsocials.utils.SchedulerUtil.runEntity(plugin, player,
                 () -> openEditor(player, session.getOriginalName()));
     }
 
@@ -534,7 +534,7 @@ public class GUIManager implements Listener {
                 closeConfirmTimestamps.put(player.getUniqueId(), now);
                 player.sendMessage(plugin.getLanguageManager().getPrefix() + " "
                         + plugin.getLanguageManager().getMessage("gui-unsaved-warning"));
-                com.fabian.xsocials.utils.SchedulerUtils.runEntity(plugin, player,
+                com.fabian.xsocials.utils.SchedulerUtil.runEntity(plugin, player,
                         () -> openEditor(player, session.getOriginalName()));
             }
         } else {

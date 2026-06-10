@@ -1,6 +1,7 @@
 package com.fabian.xsocials;
 
 import com.fabian.xsocials.commands.SocialsCommand;
+import com.fabian.xsocials.managers.DependencyManager;
 import com.fabian.xsocials.managers.LanguageManager;
 import com.fabian.xsocials.managers.SocialManager;
 import com.fabian.xsocials.managers.BroadcastManager;
@@ -29,6 +30,9 @@ public class XSocials extends JavaPlugin {
         instance = this;
 
         try {
+            // Load libraries before anything else
+            new DependencyManager(this).loadDependencies();
+
             String version = getDescription().getVersion();
             log(org.bukkit.ChatColor.DARK_AQUA + "Enabling X-Socials v" + version);
 

@@ -28,7 +28,7 @@ public class LanguageManager {
             fileName += ".yml";
         }
 
-        File languagesFolder = new File(plugin.getDataFolder(), "languages");
+        File languagesFolder = new File(plugin.getDataFolder(), "messages");
         if (!languagesFolder.exists()) {
             languagesFolder.mkdirs();
         }
@@ -42,7 +42,7 @@ public class LanguageManager {
         languageConfig = YamlConfiguration.loadConfiguration(languageFile);
 
         // Load defaults from JAR if the file exists in JAR
-        InputStream defaultStream = plugin.getResource("languages/" + fileName);
+        InputStream defaultStream = plugin.getResource("messages/" + fileName);
         if (defaultStream != null) {
             YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(
                     new InputStreamReader(defaultStream, StandardCharsets.UTF_8));
@@ -53,7 +53,7 @@ public class LanguageManager {
     public void saveDefaultConfig() {
         String[] defaults = {"en.yml", "es.yml", "pt.yml", "ja.yml", "ru.yml"};
         for (String def : defaults) {
-            ConfigUpdater.update(plugin, "languages/" + def, "languages/" + def);
+            ConfigUpdater.update(plugin, "messages/" + def, "messages/" + def);
         }
     }
 
