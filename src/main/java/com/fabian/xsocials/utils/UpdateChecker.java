@@ -72,7 +72,9 @@ public class UpdateChecker {
                         // Console startup message (same as player but without prefix per user request
                         // logic or just message)
                         // User said "Es la misma del jugador", so we use update-current
-                        plugin.logWithConfigPrefix(lang.getMessage("update-current"));
+                        plugin.logInfo(org.bukkit.ChatColor.stripColor(
+                                org.bukkit.ChatColor.translateAlternateColorCodes('&',
+                                        lang.getMessage("update-current"))));
                     }
                 }
 

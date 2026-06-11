@@ -10,7 +10,7 @@ import org.bukkit.ChatColor;
  */
 public final class DebugLogger {
 
-    private static final String PREFIX = "&8[&bX-Socials&8] &b[DEBUG] &7";
+    private static final String PREFIX = "&8[&bDEBUG&8]&r ";
 
     private DebugLogger() {
         // utility class – no instances
@@ -47,7 +47,7 @@ public final class DebugLogger {
         if (isDebugEnabled()) {
             Bukkit.getConsoleSender().sendMessage(
                     ChatColor.translateAlternateColorCodes('&',
-                            PREFIX + "&f[" + category + "&f] &7" + message));
+                            PREFIX + "&f[" + category + "&f]&r &7" + message));
         }
     }
 
@@ -58,7 +58,7 @@ public final class DebugLogger {
         if (isDebugEnabled()) {
             Bukkit.getConsoleSender().sendMessage(
                     ChatColor.translateAlternateColorCodes('&',
-                            PREFIX + "&f[" + category + "&f] &7" + message));
+                            PREFIX + "&f[" + category + "&f]&r &7" + message));
             throwable.printStackTrace();
         }
     }

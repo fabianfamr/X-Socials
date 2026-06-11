@@ -37,7 +37,7 @@ public class ConfigUpdater {
             
             if (changed) {
                 userConfig.save(configFile);
-                plugin.log(org.bukkit.ChatColor.AQUA + "Updated configuration file: " + fileName);
+                plugin.logInfo("Updated configuration file: " + fileName);
                 DebugLogger.debug("ConfigUpdater", "Keys merged into " + fileName);
             } else {
                 DebugLogger.debug("ConfigUpdater", "No changes needed for " + fileName);
@@ -74,7 +74,7 @@ public class ConfigUpdater {
             
             if (changed) {
                 userConfig.save(configFile);
-                plugin.log(org.bukkit.ChatColor.AQUA + "Updated dynamic file: " + fileName + " (" + userRootKey + ")");
+                plugin.logInfo("Updated dynamic file: " + fileName + " (" + userRootKey + ")");
                 DebugLogger.debug("ConfigUpdater", "Dynamic update applied to " + fileName);
             }
         } catch (Exception e) {

@@ -55,8 +55,7 @@ public class SocialManager {
 
         File[] files = socialsFolder.listFiles((dir, name) -> name.endsWith(".yml"));
         if (files == null || files.length == 0) {
-            plugin.log(org.bukkit.ChatColor.YELLOW
-                    + "No se encontraron archivos de redes sociales en la carpeta 'socials'");
+            plugin.logWarning("No se encontraron archivos de redes sociales en la carpeta 'socials'");
             return;
         }
 
@@ -124,7 +123,7 @@ public class SocialManager {
 
         // Log summary message
         if (loadedCount > 0) {
-            plugin.log(org.bukkit.ChatColor.GREEN + "Social networks loaded: " + loadedCount);
+            plugin.logInfo("Social networks loaded: " + loadedCount);
         }
         DebugLogger.debug("SocialManager", "Finished loading " + loadedCount + " social networks");
     }

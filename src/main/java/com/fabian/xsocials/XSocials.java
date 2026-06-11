@@ -31,9 +31,6 @@ public class XSocials extends JavaPlugin {
     private StatsManager statsManager;
     private Metrics metrics;
 
-    public static final String PREFIX = org.bukkit.ChatColor.DARK_GRAY + "[" + org.bukkit.ChatColor.AQUA + "X-Socials"
-            + org.bukkit.ChatColor.DARK_GRAY + "] " + org.bukkit.ChatColor.RESET;
-
     @Override
     public void onEnable() {
         instance = this;
@@ -45,7 +42,7 @@ public class XSocials extends JavaPlugin {
             DebugLogger.debug("Enable", "Dependencies loaded successfully");
 
             String version = getDescription().getVersion();
-            log(org.bukkit.ChatColor.DARK_AQUA + "Enabling X-Socials v" + version);
+            logInfo("Enabling X-Socials v" + version);
 
             // Save and update configuration (includes version-based backup + merge)
             DebugLogger.debug("Enable", "Saving/updating default config...");
@@ -64,7 +61,7 @@ public class XSocials extends JavaPlugin {
             DebugLogger.debug("Enable", "Initializing StatsManager...");
             statsManager = new StatsManager(this);
 
-            log(org.bukkit.ChatColor.GREEN + "Successfully enabled!");
+            logInfo("Successfully enabled!");
             DebugLogger.debug("Enable", "All managers initialized successfully");
 
             // Initialize metrics
@@ -83,7 +80,7 @@ public class XSocials extends JavaPlugin {
             if (org.bukkit.Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
                 DebugLogger.debug("Enable", "Registering PlaceholderAPI expansion...");
                 new com.fabian.xsocials.utils.XSocialsExpansion(this).register();
-                log(org.bukkit.ChatColor.AQUA + "PlaceholderAPI hooks registered!");
+                logInfo("PlaceholderAPI hooks registered!");
                 DebugLogger.debug("Enable", "PlaceholderAPI expansion registered");
             } else {
                 DebugLogger.debug("Enable", "PlaceholderAPI not found, skipping expansion");
@@ -94,10 +91,10 @@ public class XSocials extends JavaPlugin {
                 checkForUpdates();
             }
 
-            log("----------------------------------------------");
-            log(org.bukkit.ChatColor.GREEN + "  Enabled v" + version + "! Enjoy socials!");
-            log(org.bukkit.ChatColor.AQUA + "  Language: " + getConfig().getString("language", "EN").toUpperCase());
-            log("----------------------------------------------");
+            logInfo("----------------------------------------------");
+            logInfo("  Enabled v" + version + "! Enjoy socials!");
+            logInfo("  Language: " + getConfig().getString("language", "EN").toUpperCase());
+            logInfo("----------------------------------------------");
 
         } catch (Exception e) {
             getLogger().severe("FATAL ERROR DURING ENABLE: " + e.getMessage());
@@ -135,9 +132,9 @@ public class XSocials extends JavaPlugin {
             File backupFile = new File(getDataFolder(), "config_old.yml");
             try {
                 Files.copy(configFile.toPath(), backupFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                log(org.bukkit.ChatColor.YELLOW + "Found a newer configuration version! ("
+                logWarning("Found a newer configuration version! ("
                         + diskCode + " -> " + jarCode + ")");
-                log(org.bukkit.ChatColor.YELLOW + "Old config backed up to config_old.yml");
+                logWarning("Old config backed up to config_old.yml");
             } catch (Exception e) {
                 getLogger().warning("Could not back up config.yml: " + e.getMessage());
             }
@@ -150,15 +147,19 @@ public class XSocials extends JavaPlugin {
     @Override
     public void onDisable() {
         DebugLogger.debug("Disable", "Plugin disabling...");
-        log(org.bukkit.ChatColor.RED + "X-Socials disabled successfully!");
+        logInfo("X-Socials disabled successfully!");
     }
 
-    public void log(String message) {
-        org.bukkit.Bukkit.getConsoleSender().sendMessage(PREFIX + message);
+    public void logInfo(String message) {
+        getLogger().info(message);
     }
 
-    public void logWithConfigPrefix(String message) {
-        org.bukkit.Bukkit.getConsoleSender().sendMessage(languageManager.getPrefix() + " " + message);
+    public void logWarning(String message) {
+        getLogger().warning(message);
+    }
+
+    public void logError(String message) {
+        getLogger().severe(message);
     }
 
     private void registerCommands() {
