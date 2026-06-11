@@ -83,6 +83,14 @@ public class SocialsCommand implements CommandExecutor, TabCompleter {
                 handleEdit(sender, args);
                 break;
 
+            case "debug":
+                boolean dbg = plugin.getConfig().getBoolean("debug", false);
+                plugin.getConfig().set("debug", !dbg);
+                plugin.saveConfig();
+                sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
+                        "&8[&bX-Socials&8] &7Debug mode: " + (!dbg ? "&aenabled" : "&cdisabled")));
+                break;
+
             default:
                 SocialNetwork social = plugin.getSocialManager().getSocialNetwork(subCommand);
                 if (social != null) {
@@ -259,6 +267,7 @@ public class SocialsCommand implements CommandExecutor, TabCompleter {
             if (sender.hasPermission("xsocials.admin")) {
                 subcommands.add("edit");
                 subcommands.add("-gui");
+                subcommands.add("debug");
             }
             return StringUtil.copyPartialMatches(args[0], subcommands, new ArrayList<>());
         }
