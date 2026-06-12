@@ -1,4 +1,4 @@
-package com.fabian.xsocials.utils;
+package com.fabian.xsocials.managers;
 
 import com.fabian.xsocials.XSocials;
 import org.bukkit.configuration.file.YamlConfiguration;

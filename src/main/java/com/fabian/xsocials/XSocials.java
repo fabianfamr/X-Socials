@@ -9,7 +9,7 @@ import com.fabian.xsocials.managers.GUIManager;
 import com.fabian.xsocials.utils.ConfigUpdater;
 import com.fabian.xsocials.utils.DebugLogger;
 import com.fabian.xsocials.utils.UpdateChecker;
-import com.fabian.xsocials.utils.StatsManager;
+import com.fabian.xsocials.managers.StatsManager;
 import com.fabian.xsocials.metrics.Metrics;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
