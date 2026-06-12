@@ -9,8 +9,10 @@ import com.fabian.xsocials.managers.GUIManager;
 import com.fabian.xsocials.utils.ConfigUpdater;
 import com.fabian.xsocials.utils.DebugLogger;
 import com.fabian.xsocials.utils.UpdateChecker;
-import com.fabian.xsocials.managers.StatsManager;
+import com.fabian.xsocials.utils.StatsManager;
 import com.fabian.xsocials.metrics.Metrics;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -36,71 +38,74 @@ public class XSocials extends JavaPlugin {
         instance = this;
 
         try {
-            // Load libraries before anything else
-            DebugLogger.debug("Enable", "Loading dependencies...");
-            new DependencyManager(this).loadDependencies();
-            DebugLogger.debug("Enable", "Dependencies loaded successfully");
-
-            String version = getDescription().getVersion();
-            logInfo("Enabling X-Socials v" + version);
-
-            // Save and update configuration (includes version-based backup + merge)
-            DebugLogger.debug("Enable", "Saving/updating default config...");
+            // Initialize config managers first
             saveDefaultConfig();
-            DebugLogger.debug("Enable", "Config updated (debug=" + getConfig().getBoolean("debug", false) + ")");
+            DebugLogger.debug("Config", "Default config saved/loaded");
+            this.languageManager = new LanguageManager(this);
+            DebugLogger.debug("Config", "LanguageManager initialized");
+        } catch (Exception e) {
+            DebugLogger.debug("Config", "Failed to initialize config managers", e);
+            e.printStackTrace();
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
 
-            // Initialize managers
-            DebugLogger.debug("Enable", "Initializing LanguageManager...");
-            languageManager = new LanguageManager(this);
-            DebugLogger.debug("Enable", "Initializing SocialManager...");
+        // Load libraries before anything else
+        DebugLogger.debug("Dependency", "Initializing DependencyManager...");
+        new DependencyManager(this).loadDependencies();
+
+        // Initialize remaining managers
+        try {
+            DebugLogger.debug("Init", "Initializing remaining managers...");
             socialManager = new SocialManager(this);
-            DebugLogger.debug("Enable", "Initializing GUIManager...");
+            DebugLogger.debug("Init", "SocialManager initialized");
             guiManager = new GUIManager(this);
-            DebugLogger.debug("Enable", "Initializing BroadcastManager...");
+            DebugLogger.debug("Init", "GUIManager initialized");
             broadcastManager = new BroadcastManager(this);
-            DebugLogger.debug("Enable", "Initializing StatsManager...");
+            DebugLogger.debug("Init", "BroadcastManager initialized");
             statsManager = new StatsManager(this);
-
-            logInfo("Successfully enabled!");
-            DebugLogger.debug("Enable", "All managers initialized successfully");
-
-            // Initialize metrics
-            if (getConfig().getBoolean("metrics", true)) {
-                metrics = new Metrics(this, 24072);
-                metrics.addCustomChart(new Metrics.SingleLineChart("total_uses", () -> statsManager.getTotalUses()));
-                metrics.addCustomChart(new Metrics.SimpleBarChart("social_uses", statsManager::getAllSocialUses));
-            }
+            DebugLogger.debug("Init", "StatsManager initialized");
 
             // Register commands
-            DebugLogger.debug("Enable", "Registering commands...");
+            DebugLogger.debug("Command", "Registering commands...");
             registerCommands();
-            DebugLogger.debug("Enable", "Commands registered");
 
-            // Register PAPI if available
-            if (org.bukkit.Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-                DebugLogger.debug("Enable", "Registering PlaceholderAPI expansion...");
-                new com.fabian.xsocials.hooks.XSocialsExpansion(this).register();
-                logInfo("PlaceholderAPI hooks registered!");
-                DebugLogger.debug("Enable", "PlaceholderAPI expansion registered");
+            // Register listeners (implicit via commands)
+            DebugLogger.debug("Init", "Commands and listeners registered");
+
+            // PlaceholderAPI Integration
+            if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+                DebugLogger.debug("PAPI", "PlaceholderAPI found, registering expansion");
+                new com.fabian.xsocials.utils.XSocialsExpansion(this).register();
             } else {
-                DebugLogger.debug("Enable", "PlaceholderAPI not found, skipping expansion");
+                DebugLogger.debug("PAPI", "PlaceholderAPI not found, skipping expansion");
             }
-
-            // Check for updates if enabled
-            if (getConfig().getBoolean("check-updates", true)) {
-                checkForUpdates();
-            }
-
-            logInfo("----------------------------------------------");
-            logInfo("  Enabled v" + version + "! Enjoy socials!");
-            logInfo("  Language: " + getConfig().getString("language", "EN").toUpperCase());
-            logInfo("----------------------------------------------");
 
         } catch (Exception e) {
-            getLogger().severe("FATAL ERROR DURING ENABLE: " + e.getMessage());
+            DebugLogger.debug("Init", "Failed to initialize managers", e);
             e.printStackTrace();
-            org.bukkit.Bukkit.getPluginManager().disablePlugin(this);
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
         }
+
+        // Check for updates
+        if (getConfig().getBoolean("check-updates", true)) {
+            DebugLogger.debug("Update", "Update checker enabled, scheduling check");
+            this.updateChecker = new UpdateChecker(this);
+            this.updateChecker.checkForUpdates();
+        }
+
+        // Initialize bStats Metrics
+        setupMetrics();
+
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                "&8[&bX-Socials&8] &7----------------------------------------------"));
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                "&8[&bX-Socials&8]   &aEnabled v" + getDescription().getVersion() + "! Socials are ready."));
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                "&8[&bX-Socials&8]   &7Language: &f" + getConfig().getString("language", "EN").toUpperCase()));
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                "&8[&bX-Socials&8] &7----------------------------------------------"));
     }
 
     @Override
@@ -146,8 +151,26 @@ public class XSocials extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        DebugLogger.debug("Disable", "Plugin disabling...");
-        logInfo("X-Socials disabled successfully!");
+        DebugLogger.debug("Init", "Plugin disabling...");
+
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                "&8[&bX-Socials&8] &7----------------------------------------------"));
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                "&8[&bX-Socials&8]   &cDisabled v" + getDescription().getVersion() + "! Out."));
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
+                "&8[&bX-Socials&8] &7----------------------------------------------"));
+    }
+
+    private void setupMetrics() {
+        if (getConfig().getBoolean("metrics", true)) {
+            try {
+                metrics = new Metrics(this, 24072);
+                metrics.addCustomChart(new Metrics.SingleLineChart("total_uses", () -> statsManager.getTotalUses()));
+                metrics.addCustomChart(new Metrics.SimpleBarChart("social_uses", statsManager::getAllSocialUses));
+            } catch (Exception e) {
+                logWarning("Could not start bStats Metrics: " + e.getMessage());
+            }
+        }
     }
 
     public void logInfo(String message) {
