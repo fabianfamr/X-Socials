@@ -1,11 +1,26 @@
-# ==========================================================
-# X-Socials Main Configuration
-# ==========================================================
-# This is the primary configuration file for X-Socials.
-# All messages sent by the plugin can be localized in the /languages/ folder.
-# 
-# Support: https://discord.gg/Yb6GsfGWmd
-# ==========================================================
+#
+#  ____  _____ ____  __  __  ___  ____  _   _
+# |  _ \| ____|  _ \|  \/  |/ _ \|  _ \| \ | |
+# | | | |  _| | |_) | |\/| | | | | | | |  \| |
+# | |_| | |___|  _ <| |  | | |_| | |_| | |\  |
+# |____/|_____|_| \_\_|  |_|\___/|____/|_| \_|
+#
+# ======================================================== #
+#    X-Socials | Social Links & Broadcast Plugin for Minecraft #
+#    Author: Fabian | Web: https://xproyects.qzz.io             #
+# ======================================================== #
+#
+# Features:
+#   - Custom social network links (Discord, Twitter, Instagram, YouTube, etc.)
+#   - GUI menu to display all social links to players
+#   - First-visit reward system (commands executed on first click)
+#   - Broadcast system with sequential or random order
+#   - Per-social cooldown, permissions and usage statistics
+#   - In-game GUI editor to create and customize socials
+#   - PlaceholderAPI expansion with social-related placeholders
+#
+# All messages can be localized in the /languages/ folder.
+# Default languages: en, es, pt, ru, ja.
 
 # ----------------------------------------------------------
 # Plugin Language Settings
