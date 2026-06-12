@@ -1,7 +1,8 @@
-package com.fabian.xsocials.utils;
+package com.fabian.xsocials.hooks;
 
 import com.fabian.xsocials.XSocials;
 import com.fabian.xsocials.models.SocialNetwork;
+import com.fabian.xsocials.utils.DebugLogger;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;

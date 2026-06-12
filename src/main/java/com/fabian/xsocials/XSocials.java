@@ -79,7 +79,7 @@ public class XSocials extends JavaPlugin {
             // Register PAPI if available
             if (org.bukkit.Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
                 DebugLogger.debug("Enable", "Registering PlaceholderAPI expansion...");
-                new com.fabian.xsocials.utils.XSocialsExpansion(this).register();
+                new com.fabian.xsocials.hooks.XSocialsExpansion(this).register();
                 logInfo("PlaceholderAPI hooks registered!");
                 DebugLogger.debug("Enable", "PlaceholderAPI expansion registered");
             } else {
