@@ -24,12 +24,15 @@ language: en
 # You can use standard Minecraft color codes (&).
 prefix: "&8[&bX-Socials&8]&r"
 
-# ----------------------------------------------------------
-# Global Toggles
-# ----------------------------------------------------------
-# check-updates: Automatically checks for newer versions on SpigotMC on startup.
-# If an update is found, administrators will be notified in console and game.
-check-updates: true
+# ------------------------------------------------------------------------------
+# UPDATE CHECKER
+# Checks the SpigotMC API for new versions on startup.
+# ------------------------------------------------------------------------------
+updates:
+  # Check for updates when the server starts?
+  check: true
+  # Notify admins (players with xsocials.admin) on join if an update exists?
+  notify-on-join: true
 
 # debug: Enables verbose logging for troubleshooting.
 # Set to true only when asked by support.

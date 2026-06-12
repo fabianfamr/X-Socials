@@ -13,6 +13,7 @@ import com.fabian.xsocials.utils.StatsManager;
 import com.fabian.xsocials.metrics.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.event.EventHandler;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -32,6 +33,7 @@ public class XSocials extends JavaPlugin {
     private com.fabian.xsocials.managers.BroadcastManager broadcastManager;
     private StatsManager statsManager;
     private Metrics metrics;
+    private UpdateChecker updateChecker;
 
     @Override
     public void onEnable() {
@@ -89,11 +91,31 @@ public class XSocials extends JavaPlugin {
         }
 
         // Check for updates
-        if (getConfig().getBoolean("check-updates", true)) {
+        if (getConfig().getBoolean("updates.check", true)) {
             DebugLogger.debug("Update", "Update checker enabled, scheduling check");
             this.updateChecker = new UpdateChecker(this);
             this.updateChecker.checkForUpdates();
         }
+
+        // Register update notification listener
+        getServer().getPluginManager().registerEvents(new org.bukkit.event.Listener() {
+            @EventHandler
+            public void onPlayerJoin(org.bukkit.event.player.PlayerJoinEvent event) {
+                org.bukkit.entity.Player player = event.getPlayer();
+                if (!player.isOp() && !player.hasPermission("xsocials.admin")) return;
+                if (!getConfig().getBoolean("updates.notify-on-join", true)) return;
+                if (updateChecker == null) return;
+                if (updateChecker.isUpdateAvailable()) {
+                    DebugLogger.debug("UpdateListener", "Notifying admin " + player.getName() + " about update");
+                    String current = getDescription().getVersion();
+                    String latest = updateChecker.getLatestVersion();
+                    player.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
+                            "&8[&bX-Socials&8] &eA new version is available: &a" + latest + " &e(current: &c" + current + "&e)"));
+                    player.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
+                            "&8[&bX-Socials&8] &7Download it at: &f" + updateChecker.getDownloadUrl()));
+                }
+            }
+        }, this);
 
         // Initialize bStats Metrics
         setupMetrics();
