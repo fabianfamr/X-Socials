@@ -99,6 +99,13 @@ public class XSocials extends JavaPlugin {
             this.updateChecker.checkForUpdates();
         }
 
+        // Hide own namespaced commands from tab-completion (1.13+)
+        try {
+            Class.forName("org.bukkit.event.player.PlayerCommandSendEvent");
+            getServer().getPluginManager().registerEvents(new com.fabian.xsocials.listeners.CommandHideListener(), this);
+            DebugLogger.debug("Init", "CommandHideListener registered");
+        } catch (ClassNotFoundException ignored) {}
+
         // Register update notification listener
         getServer().getPluginManager().registerEvents(new org.bukkit.event.Listener() {
             @EventHandler
