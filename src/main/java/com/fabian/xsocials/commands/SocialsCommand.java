@@ -84,11 +84,24 @@ public class SocialsCommand implements CommandExecutor, TabCompleter {
                 break;
 
             case "debug":
-                boolean dbg = plugin.getConfig().getBoolean("debug", false);
-                plugin.getConfig().set("debug", !dbg);
-                plugin.saveConfig();
-                sender.sendMessage(org.bukkit.ChatColor.translateAlternateColorCodes('&',
-                        "&8[&bX-Socials&8] &7Debug mode: " + (!dbg ? "&aenabled" : "&cdisabled")));
+                if (sender instanceof Player) {
+                    Player player = (Player) sender;
+                    if (plugin.debugPlayer != null && plugin.debugPlayer.equals(player.getUniqueId())) {
+                        plugin.debugPlayer = null;
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                plugin.getLanguageManager().getPrefix() + " &7Debug mode: &cdisabled"));
+                    } else {
+                        plugin.debugPlayer = player.getUniqueId();
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                plugin.getLanguageManager().getPrefix() + " &7Debug mode: &aenabled &7(messages sent to you)"));
+                    }
+                } else {
+                    boolean dbg = plugin.getConfig().getBoolean("debug", false);
+                    plugin.getConfig().set("debug", !dbg);
+                    plugin.saveConfig();
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                            plugin.getLanguageManager().getPrefix() + " &7Debug mode: " + (!dbg ? "&aenabled &7(console)" : "&cdisabled")));
+                }
                 break;
 
             default:

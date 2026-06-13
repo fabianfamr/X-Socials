@@ -9,7 +9,7 @@ import com.fabian.xsocials.managers.GUIManager;
 import com.fabian.xsocials.utils.ConfigUpdater;
 import com.fabian.xsocials.utils.DebugLogger;
 import com.fabian.xsocials.utils.UpdateChecker;
-import com.fabian.xsocials.utils.StatsManager;
+import com.fabian.xsocials.managers.StatsManager;
 import com.fabian.xsocials.metrics.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 public class XSocials extends JavaPlugin {
 
@@ -34,6 +35,7 @@ public class XSocials extends JavaPlugin {
     private StatsManager statsManager;
     private Metrics metrics;
     private UpdateChecker updateChecker;
+    public UUID debugPlayer; // player who enabled debug via command (null = console-only via config)
 
     @Override
     public void onEnable() {
@@ -78,7 +80,7 @@ public class XSocials extends JavaPlugin {
             // PlaceholderAPI Integration
             if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
                 DebugLogger.debug("PAPI", "PlaceholderAPI found, registering expansion");
-                new com.fabian.xsocials.utils.XSocialsExpansion(this).register();
+                new com.fabian.xsocials.hooks.XSocialsExpansion(this).register();
             } else {
                 DebugLogger.debug("PAPI", "PlaceholderAPI not found, skipping expansion");
             }

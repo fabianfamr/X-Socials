@@ -1,6 +1,7 @@
 package com.fabian.xsocials.managers;
 
 import com.fabian.xsocials.XSocials;
+import com.fabian.xsocials.utils.DebugLogger;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;

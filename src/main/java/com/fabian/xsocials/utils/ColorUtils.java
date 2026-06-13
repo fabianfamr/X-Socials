@@ -126,9 +126,12 @@ public class ColorUtils {
 
     public static void sendComponent(CommandSender sender, Component component) {
         try {
-            sender.sendMessage(component);
+            // Paper servers accept Component directly
+            sender.getClass().getMethod("sendMessage", Component.class).invoke(sender, component);
             return;
-        } catch (NoSuchMethodError | NoClassDefFoundError e) {}
+        } catch (NoSuchMethodException | NoClassDefFoundError e) {
+            // Spigot: fall back to legacy string
+        } catch (Exception ignored) {}
         sender.sendMessage(toLegacyString(component));
     }
 
