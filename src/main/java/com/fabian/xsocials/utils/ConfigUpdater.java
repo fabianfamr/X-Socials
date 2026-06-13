@@ -37,7 +37,7 @@ public class ConfigUpdater {
             
             if (changed) {
                 userConfig.save(configFile);
-                plugin.logInfo("Updated configuration file: " + fileName);
+                plugin.logInfo("&eUpdated configuration file: &f" + fileName);
                 DebugLogger.debug("ConfigUpdater", "Keys merged into " + fileName);
             } else {
                 DebugLogger.debug("ConfigUpdater", "No changes needed for " + fileName);
@@ -74,7 +74,7 @@ public class ConfigUpdater {
             
             if (changed) {
                 userConfig.save(configFile);
-                plugin.logInfo("Updated dynamic file: " + fileName + " (" + userRootKey + ")");
+                plugin.logInfo("&eUpdated dynamic file: &f" + fileName + " &f(&f" + userRootKey + "&f)");
                 DebugLogger.debug("ConfigUpdater", "Dynamic update applied to " + fileName);
             }
         } catch (Exception e) {

@@ -123,7 +123,7 @@ public class SocialManager {
 
         // Log summary message
         if (loadedCount > 0) {
-            plugin.logInfo("Social networks loaded: " + loadedCount);
+            plugin.logInfo("&aSocial networks loaded: &f" + loadedCount);
         }
         DebugLogger.debug("SocialManager", "Finished loading " + loadedCount + " social networks");
     }
