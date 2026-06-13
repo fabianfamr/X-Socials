@@ -88,18 +88,20 @@ public class SocialsCommand implements CommandExecutor, TabCompleter {
                     Player player = (Player) sender;
                     if (plugin.debugPlayer != null && plugin.debugPlayer.equals(player.getUniqueId())) {
                         plugin.debugPlayer = null;
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        com.fabian.xsocials.utils.ColorUtils.sendComponent(player,
+                                com.fabian.xsocials.utils.ColorUtils.format(player,
                                 plugin.getLanguageManager().getPrefix() + " &7Debug mode: &cdisabled"));
                     } else {
                         plugin.debugPlayer = player.getUniqueId();
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        com.fabian.xsocials.utils.ColorUtils.sendComponent(player,
+                                com.fabian.xsocials.utils.ColorUtils.format(player,
                                 plugin.getLanguageManager().getPrefix() + " &7Debug mode: &aenabled &7(messages sent to you)"));
                     }
                 } else {
                     boolean dbg = plugin.getConfig().getBoolean("debug", false);
                     plugin.getConfig().set("debug", !dbg);
                     plugin.saveConfig();
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    sender.sendMessage(com.fabian.xsocials.utils.ColorUtils.translate(
                             plugin.getLanguageManager().getPrefix() + " &7Debug mode: " + (!dbg ? "&aenabled &7(console)" : "&cdisabled")));
                 }
                 break;
