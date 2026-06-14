@@ -27,6 +27,7 @@ permissions:
       xsocials.reload: true
       xsocials.update: true
       xsocials.gui: true
+      xsocials.admin.forcemessages: true
   xsocials.use:
     description: Allows using the basic social commands
     default: true
@@ -38,4 +39,7 @@ permissions:
     default: op
   xsocials.update:
     description: Allows checking for plugin updates
+    default: op
+  xsocials.admin.forcemessages:
+    description: Allows force-updating or regenerating message files
     default: op

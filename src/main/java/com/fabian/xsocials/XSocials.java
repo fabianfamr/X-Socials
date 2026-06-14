@@ -12,7 +12,6 @@ import com.fabian.xsocials.utils.UpdateChecker;
 import com.fabian.xsocials.managers.StatsManager;
 import com.fabian.xsocials.metrics.Metrics;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -129,14 +128,10 @@ public class XSocials extends JavaPlugin {
         // Initialize bStats Metrics
         setupMetrics();
 
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                "&8[&bX-Socials&8] &7----------------------------------------------"));
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                "&8[&bX-Socials&8]   &aEnabled v" + getDescription().getVersion() + "! Socials are ready."));
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                "&8[&bX-Socials&8]   &7Language: &f" + getConfig().getString("language", "EN").toUpperCase()));
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                "&8[&bX-Socials&8] &7----------------------------------------------"));
+        getLogger().info(" ----------------------------------------------");
+        getLogger().info("   Enabled v" + getDescription().getVersion() + "! Socials are ready.");
+        getLogger().info("   Language: " + getConfig().getString("language", "EN").toUpperCase());
+        getLogger().info(" ----------------------------------------------");
     }
 
     @Override
@@ -184,12 +179,9 @@ public class XSocials extends JavaPlugin {
     public void onDisable() {
         DebugLogger.debug("Init", "Plugin disabling...");
 
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                "&8[&bX-Socials&8] &7----------------------------------------------"));
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                "&8[&bX-Socials&8]   &cDisabled v" + getDescription().getVersion() + "! Out."));
-        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&',
-                "&8[&bX-Socials&8] &7----------------------------------------------"));
+        getLogger().info(" ----------------------------------------------");
+        getLogger().info("   Disabled v" + getDescription().getVersion() + "! Out.");
+        getLogger().info(" ----------------------------------------------");
     }
 
     private void setupMetrics() {

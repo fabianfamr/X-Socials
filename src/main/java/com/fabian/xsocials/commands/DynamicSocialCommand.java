@@ -2,6 +2,7 @@ package com.fabian.xsocials.commands;
 
 import com.fabian.xsocials.XSocials;
 import com.fabian.xsocials.models.SocialNetwork;
+import com.fabian.xsocials.utils.ColorUtils;
 import com.fabian.xsocials.utils.DebugLogger;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -28,7 +29,7 @@ public class DynamicSocialCommand extends Command {
         if (testPermissionSilent(target)) {
             return true;
         }
-        target.sendMessage(plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("no-permission"));
+        ColorUtils.send(target, plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("no-permission"));
         return false;
     }
 
@@ -36,7 +37,7 @@ public class DynamicSocialCommand extends Command {
     public boolean execute(CommandSender sender, String label, String[] args) {
         DebugLogger.debug("DynamicCommand", "/" + label + " executed by " + sender.getName());
         if (args.length > 0) {
-            sender.sendMessage(plugin.getLanguageManager().getPrefix() + " " + org.bukkit.ChatColor.RED + "This command does not accept arguments.");
+            ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + org.bukkit.ChatColor.RED + "This command does not accept arguments.");
             return true;
         }
         

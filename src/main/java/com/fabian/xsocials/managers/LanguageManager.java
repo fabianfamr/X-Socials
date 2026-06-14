@@ -7,9 +7,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LanguageManager {
 
@@ -41,7 +44,7 @@ public class LanguageManager {
         saveDefaultConfig();
 
         // Load language configuration
-        languageConfig = YamlConfiguration.loadConfiguration(languageFile);
+        languageConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(new FileInputStream(languageFile), StandardCharsets.UTF_8));
 
         // Load defaults from JAR if the file exists in JAR
         InputStream defaultStream = plugin.getResource("messages/" + fileName);
@@ -87,6 +90,84 @@ public class LanguageManager {
                     + ChatColor.RESET;
         }
         return com.fabian.xsocials.utils.ColorUtils.translate(prefix);
+    }
+
+    public String getCurrentLanguage() {
+        return plugin.getConfig().getString("language", "EN");
+    }
+
+    public List<String> getAvailableLanguages() {
+        File messagesFolder = new File(plugin.getDataFolder(), "messages");
+        File[] files = messagesFolder.listFiles((dir, name) -> name.endsWith(".yml"));
+        List<String> languages = new ArrayList<>();
+        if (files != null) {
+            for (File file : files) {
+                String name = file.getName();
+                languages.add(name.substring(0, name.length() - 4));
+            }
+        }
+        return languages;
+    }
+
+    public boolean forceReloadMessages(String langCode) {
+        String fileName = langCode.toLowerCase();
+        if (!fileName.endsWith(".yml")) {
+            fileName += ".yml";
+        }
+        File targetFile = new File(plugin.getDataFolder(), "messages/" + fileName);
+        if (!targetFile.exists()) {
+            return false;
+        }
+        ConfigUpdater.update(plugin, "messages/" + fileName, "messages/" + fileName);
+        if (getCurrentLanguage().equalsIgnoreCase(langCode)) {
+            reload();
+        }
+        return true;
+    }
+
+    public int forceReloadAllMessages() {
+        List<String> languages = getAvailableLanguages();
+        for (String lang : languages) {
+            forceReloadMessages(lang);
+        }
+        return languages.size();
+    }
+
+    public boolean forceResetMessages(String langCode) {
+        String fileName = langCode.toLowerCase();
+        if (!fileName.endsWith(".yml")) {
+            fileName += ".yml";
+        }
+        if (plugin.getResource("messages/" + fileName) == null) {
+            return false;
+        }
+        File targetFile = new File(plugin.getDataFolder(), "messages/" + fileName);
+        if (targetFile.exists()) {
+            targetFile.delete();
+        }
+        plugin.saveResource("messages/" + fileName, true);
+        if (getCurrentLanguage().equalsIgnoreCase(langCode)) {
+            reload();
+        }
+        return true;
+    }
+
+    public int forceResetAllMessages() {
+        String[] defaults = {"en.yml", "es.yml", "pt.yml", "ja.yml", "ru.yml"};
+        int count = 0;
+        for (String def : defaults) {
+            String langCode = def.substring(0, def.length() - 4);
+            File targetFile = new File(plugin.getDataFolder(), "messages/" + def);
+            if (targetFile.exists()) {
+                targetFile.delete();
+            }
+            plugin.saveResource("messages/" + def, true);
+            count++;
+            if (getCurrentLanguage().equalsIgnoreCase(langCode)) {
+                reload();
+            }
+        }
+        return count;
     }
 
     public void reload() {

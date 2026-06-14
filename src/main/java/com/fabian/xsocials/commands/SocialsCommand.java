@@ -2,6 +2,7 @@ package com.fabian.xsocials.commands;
 
 import com.fabian.xsocials.XSocials;
 import com.fabian.xsocials.models.SocialNetwork;
+import com.fabian.xsocials.utils.ColorUtils;
 import com.fabian.xsocials.utils.DebugLogger;
 import com.fabian.xsocials.utils.UpdateChecker;
 import org.bukkit.ChatColor;
@@ -35,7 +36,7 @@ public class SocialsCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
             if (!sender.hasPermission("xsocials.admin")) {
-                sender.sendMessage(plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("no-permission"));
+                ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("no-permission"));
                 return true;
             }
             plugin.getGUIManager().openMainGUI((Player) sender);
@@ -53,19 +54,19 @@ public class SocialsCommand implements CommandExecutor, TabCompleter {
             case "reload":
                 DebugLogger.debug("SocialsCommand", "Reload subcommand by " + sender.getName());
                 if (!sender.hasPermission("xsocials.reload")) {
-                    sender.sendMessage(plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("no-permission"));
+                    ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("no-permission"));
                     return true;
                 }
                 plugin.reload();
-                sender.sendMessage(plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("config-reloaded"));
+                ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("config-reloaded"));
                 break;
 
             case "update":
                 if (!sender.hasPermission("xsocials.update")) {
-                    sender.sendMessage(plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("no-permission"));
+                    ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("no-permission"));
                     return true;
                 }
-                sender.sendMessage(plugin.getLanguageManager().getPrefix() + " "
+                ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " "
                         + plugin.getLanguageManager().getMessage("checking-updates"));
                 new UpdateChecker(plugin).checkForUpdates(sender);
                 break;
@@ -81,6 +82,10 @@ public class SocialsCommand implements CommandExecutor, TabCompleter {
             case "edit":
                 DebugLogger.debug("SocialsCommand", "Edit subcommand by " + sender.getName() + ": " + String.join(" ", args));
                 handleEdit(sender, args);
+                break;
+
+            case "forcemessages":
+                handleForceMessages(sender, args);
                 break;
 
             case "debug":
@@ -101,7 +106,7 @@ public class SocialsCommand implements CommandExecutor, TabCompleter {
                     boolean dbg = plugin.getConfig().getBoolean("debug", false);
                     plugin.getConfig().set("debug", !dbg);
                     plugin.saveConfig();
-                    sender.sendMessage(com.fabian.xsocials.utils.ColorUtils.translate(
+                    ColorUtils.send(sender, com.fabian.xsocials.utils.ColorUtils.translate(
                             plugin.getLanguageManager().getPrefix() + " &7Debug mode: " + (!dbg ? "&aenabled &7(console)" : "&cdisabled")));
                 }
                 break;
@@ -111,7 +116,7 @@ public class SocialsCommand implements CommandExecutor, TabCompleter {
                 if (social != null) {
                     executeSocialCommand(sender, social);
                 } else {
-                    sender.sendMessage(plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("command-usage"));
+                    ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("command-usage"));
                 }
                 break;
         }
@@ -125,12 +130,12 @@ public class SocialsCommand implements CommandExecutor, TabCompleter {
 
     private void handleEdit(CommandSender sender, String[] args) {
         if (!sender.hasPermission("xsocials.admin")) {
-            sender.sendMessage(plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("no-permission"));
+            ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("no-permission"));
             return;
         }
 
         if (args.length < 4) {
-            sender.sendMessage(plugin.getLanguageManager().getPrefix() + " " + ChatColor.RED + "Usage: /xs edit <social> <link|hover|permission|command> <value>");
+            ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + ChatColor.RED + "Usage: /xs edit <social> <link|hover|permission|command> <value>");
             return;
         }
 
@@ -149,7 +154,7 @@ public class SocialsCommand implements CommandExecutor, TabCompleter {
                 .findFirst().orElse(null);
 
         if (social == null) {
-            sender.sendMessage(plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("social-not-found").replace("{social}", socialName));
+            ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("social-not-found").replace("{social}", socialName));
             return;
         }
 
@@ -163,31 +168,92 @@ public class SocialsCommand implements CommandExecutor, TabCompleter {
             case "permission": session.setPermission(value.equalsIgnoreCase("none") ? "" : value); break;
             case "command": session.setCommand(value.split(" ")[0]); break;
             default:
-                sender.sendMessage(plugin.getLanguageManager().getPrefix() + " " + ChatColor.RED + "Invalid property. Use: link, hover, permission, command");
+                ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + ChatColor.RED + "Invalid property. Use: link, hover, permission, command");
                 return;
         }
 
         session.save();
-        sender.sendMessage(plugin.getLanguageManager().getPrefix() + " " + ChatColor.GREEN + "Property '" + property + "' updated for " + social.getName());
+        ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + ChatColor.GREEN + "Property '" + property + "' updated for " + social.getName());
+    }
+
+    private void handleForceMessages(CommandSender sender, String[] args) {
+        if (!sender.hasPermission("xsocials.admin.forcemessages")) {
+            ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("no-permission"));
+            return;
+        }
+
+        if (args.length < 3) {
+            String currentLang = plugin.getLanguageManager().getCurrentLanguage();
+            ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("force-messages-current", currentLang));
+            ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("force-messages-usage"));
+            return;
+        }
+
+        String mode = args[1].toLowerCase();
+        String target = args[2].toLowerCase();
+
+        if (!mode.equals("new") && !mode.equals("keep")) {
+            ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("force-messages-invalid-mode"));
+            return;
+        }
+
+        if (mode.equals("keep")) {
+            if (target.equals("all")) {
+                int count = plugin.getLanguageManager().forceReloadAllMessages();
+                ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("force-messages-all", String.valueOf(count)));
+            } else {
+                boolean success = plugin.getLanguageManager().forceReloadMessages(target);
+                if (!success) {
+                    String available = String.join(", ", plugin.getLanguageManager().getAvailableLanguages());
+                    ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("language-not-found", available));
+                    return;
+                }
+                String currentLang = plugin.getLanguageManager().getCurrentLanguage();
+                if (currentLang.equalsIgnoreCase(target)) {
+                    ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("force-messages-success", target));
+                } else {
+                    ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("force-messages-no-changes", target));
+                }
+            }
+        } else {
+            // mode == "new"
+            if (target.equals("all")) {
+                int count = plugin.getLanguageManager().forceResetAllMessages();
+                ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("force-messages-reset-all", String.valueOf(count)));
+            } else {
+                boolean success = plugin.getLanguageManager().forceResetMessages(target);
+                if (!success) {
+                    String available = String.join(", ", plugin.getLanguageManager().getAvailableLanguages());
+                    ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("language-not-found", available));
+                    return;
+                }
+                String currentLang = plugin.getLanguageManager().getCurrentLanguage();
+                if (currentLang.equalsIgnoreCase(target)) {
+                    ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("force-messages-reset-success", target));
+                } else {
+                    ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + plugin.getLanguageManager().getMessage("force-messages-reset-no-active", target));
+                }
+            }
+        }
     }
 
     private void sendHelp(CommandSender sender) {
-        sender.sendMessage(plugin.getLanguageManager().getMessage("help-header"));
-        sender.sendMessage(plugin.getLanguageManager().getMessage("help-title"));
-        sender.sendMessage(plugin.getLanguageManager().getMessage("help-list"));
-        sender.sendMessage(plugin.getLanguageManager().getMessage("help-version"));
-        sender.sendMessage(plugin.getLanguageManager().getMessage("help-gui"));
-        sender.sendMessage(plugin.getLanguageManager().getMessage("help-reload"));
-        sender.sendMessage(plugin.getLanguageManager().getMessage("help-update"));
-        sender.sendMessage(plugin.getLanguageManager().getMessage("help-footer"));
+        ColorUtils.send(sender, plugin.getLanguageManager().getMessage("help-header"));
+        ColorUtils.send(sender, plugin.getLanguageManager().getMessage("help-title"));
+        ColorUtils.send(sender, plugin.getLanguageManager().getMessage("help-list"));
+        ColorUtils.send(sender, plugin.getLanguageManager().getMessage("help-version"));
+        ColorUtils.send(sender, plugin.getLanguageManager().getMessage("help-gui"));
+        ColorUtils.send(sender, plugin.getLanguageManager().getMessage("help-reload"));
+        ColorUtils.send(sender, plugin.getLanguageManager().getMessage("help-update"));
+        ColorUtils.send(sender, plugin.getLanguageManager().getMessage("help-footer"));
     }
 
     private void listSocials(CommandSender sender) {
-        sender.sendMessage(plugin.getLanguageManager().getMessage("list-header"));
+        ColorUtils.send(sender, plugin.getLanguageManager().getMessage("list-header"));
         for (SocialNetwork social : plugin.getSocialManager().getSocialNetworks().values()) {
-            sender.sendMessage(plugin.getLanguageManager().getMessage("list-format", social.getCommand(), social.getName()));
+            ColorUtils.send(sender, plugin.getLanguageManager().getMessage("list-format", social.getCommand(), social.getName()));
         }
-        sender.sendMessage(plugin.getLanguageManager().getMessage("list-footer"));
+        ColorUtils.send(sender, plugin.getLanguageManager().getMessage("list-footer"));
     }
 
     private void showVersion(CommandSender sender) {
@@ -198,9 +264,9 @@ public class SocialsCommand implements CommandExecutor, TabCompleter {
         String pluginVersion = plugin.getDescription().getVersion();
         String serverName = getServerImplementation();
 
-        sender.sendMessage(plugin.getLanguageManager().getPrefix() + " " + ChatColor.GRAY + "=== " + ChatColor.AQUA + "X-Socials " + pluginVersion + ChatColor.GRAY + " ===");
-        sender.sendMessage(plugin.getLanguageManager().getPrefix() + " " + ChatColor.GRAY + "Server: " + ChatColor.WHITE + serverName + " " + serverVersion);
-        sender.sendMessage(plugin.getLanguageManager().getPrefix() + " " + ChatColor.GRAY + "Protocol: " + ChatColor.WHITE + getProtocolVersion() + ChatColor.GRAY + " (" + org.bukkit.Bukkit.getVersion() + ")");
+        ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + ChatColor.GRAY + "=== " + ChatColor.AQUA + "X-Socials " + pluginVersion + ChatColor.GRAY + " ===");
+        ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + ChatColor.GRAY + "Server: " + ChatColor.WHITE + serverName + " " + serverVersion);
+        ColorUtils.send(sender, plugin.getLanguageManager().getPrefix() + " " + ChatColor.GRAY + "Protocol: " + ChatColor.WHITE + getProtocolVersion() + ChatColor.GRAY + " (" + org.bukkit.Bukkit.getVersion() + ")");
     }
 
     private String getServerImplementation() {
@@ -283,8 +349,20 @@ public class SocialsCommand implements CommandExecutor, TabCompleter {
                 subcommands.add("edit");
                 subcommands.add("-gui");
                 subcommands.add("debug");
+                subcommands.add("forcemessages");
             }
             return StringUtil.copyPartialMatches(args[0], subcommands, new ArrayList<>());
+        }
+
+        if (args.length == 2 && args[0].equalsIgnoreCase("forcemessages") && sender.hasPermission("xsocials.admin.forcemessages")) {
+            return StringUtil.copyPartialMatches(args[1], Arrays.asList("new", "keep"), new ArrayList<>());
+        }
+
+        if (args.length == 3 && args[0].equalsIgnoreCase("forcemessages") && sender.hasPermission("xsocials.admin.forcemessages")) {
+            List<String> languages = new ArrayList<>();
+            languages.add("all");
+            languages.addAll(plugin.getLanguageManager().getAvailableLanguages());
+            return StringUtil.copyPartialMatches(args[2], languages, new ArrayList<>());
         }
 
         if (args.length == 2 && args[0].equalsIgnoreCase("edit") && sender.hasPermission("xsocials.admin")) {
