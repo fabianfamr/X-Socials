@@ -44,7 +44,11 @@ public class LanguageManager {
         saveDefaultConfig();
 
         // Load language configuration
-        languageConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(new FileInputStream(languageFile), StandardCharsets.UTF_8));
+        try {
+            languageConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(new FileInputStream(languageFile), StandardCharsets.UTF_8));
+        } catch (java.io.FileNotFoundException e) {
+            languageConfig = YamlConfiguration.loadConfiguration(languageFile);
+        }
 
         // Load defaults from JAR if the file exists in JAR
         InputStream defaultStream = plugin.getResource("messages/" + fileName);
